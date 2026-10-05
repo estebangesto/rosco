@@ -39,9 +39,16 @@ WebSocket en salas identificadas por el código de partida.
 - Pistas "contiene" solo para J, Ñ, Q, Y, Z; "empieza con" para el resto.
 - Por turnos: errar o pasar cede el turno; la reanudación la confirma el
   moderador o el jugador en turno.
-- Si un jugador termina o se queda sin tiempo, el otro sigue solo.
+- Si un jugador termina o se queda sin tiempo, el otro sigue solo; en ese
+  caso errar o pasar lo deja en espera (pausa), listo para continuar, y el
+  reloj no sigue corriendo.
 - Colores: verde acierto, rojo error, amarillo pasapalabra, azul actual.
 - Desempate: más aciertos → menos errores → más tiempo restante.
+- Al terminar, las cuatro vistas muestran la pantalla final: ganador con
+  festejo, estadísticas, ambos roscos y el detalle de definiciones de cada
+  jugador indicando si fue bien contestada o no.
+- Atajos del moderador: `1` correcto, `2` incorrecto, `3` pasapalabra,
+  `4` pausa o reanuda el turno según el estado.
 - Las definiciones no se repiten para el mismo jugador ni entre jugadores
   en la misma partida; se priorizan las de menor contador de usos.
 - Las letras con menos de 2 definiciones activas no entran en juego.
@@ -88,6 +95,12 @@ environment:
 - Letras: `GET /api/themes/:id/letters`, `PUT /api/themes/:id/letters/:letter`
 - Partidas: `GET/POST /api/games`, `GET /api/games/:code`,
   `POST /api/games/:code/start|judge|resume`
+- Dirección del servidor por partida: `PUT /api/games/:code/base-url`
+  con `{ "baseUrl": "http://192.168.1.20:3000" }`; regenera links y QR
+  con la nueva dirección. También se puede fijar al crear la partida
+  (`POST /api/games` acepta `baseUrl`) o desde la pantalla Partida del
+  admin (campo + botón Aplicar). La dirección guardada tiene prioridad
+  sobre `PUBLIC_BASE_URL` y el Host del request.
 
 El juego en vivo también expone las mismas acciones por WebSocket
 (`join`, `judge`, `resume`, `start`) en `/ws`.

@@ -32,7 +32,18 @@ async function withQr(code: string, base: string) {
   for (const [k, v] of Object.entries(links)) {
     qr[k] = await QRCode.toDataURL(v, { width: 240, margin: 1 });
   }
-  return { code, links, qr };
+  return { code, baseUrl: base, links, qr };
+}
+
+/** Valida la dirección del servidor cargada en la pantalla de partida:
+    http(s)://host[:puerto], sin ruta. */
+function sanitizeBaseUrl(raw: unknown): string {
+  const s = String(raw ?? "").trim().replace(/\/+$/, "");
+  if (!s) throw new Error("La dirección no puede estar vacía.");
+  if (!/^https?:\/\/[^/\s]+$/i.test(s)) {
+    throw new Error("Dirección inválida: usá el formato http(s)://IP-o-dominio[:puerto].");
+  }
+  return s;
 }
 
 export function buildRouter(ctx: ApiContext): Router {
@@ -157,14 +168,17 @@ export function buildRouter(ctx: ApiContext): Router {
         if (!rooms.has(code) && !(db.prepare("SELECT id FROM games WHERE code = ?").get(code))) break;
       }
       const config = { playerNames: [names[0].trim(), names[1].trim()] as [string, string], minutes, themeId };
-      db.prepare("INSERT INTO games (code, theme_id, config, status) VALUES (?, ?, ?, 'lobby')").run(
-        code, themeId, JSON.stringify(config)
+      const baseUrl = req.body?.baseUrl != null && String(req.body.baseUrl).trim() !== ""
+        ? sanitizeBaseUrl(req.body.baseUrl)
+        : requestBaseUrl(req.get("host"), req.protocol);
+      db.prepare("INSERT INTO games (code, theme_id, config, status, base_url) VALUES (?, ?, ?, 'lobby', ?)").run(
+        code, themeId, JSON.stringify(config), baseUrl
       );
       const room = new GameRoom(code, { ...config, themeName: theme.name });
       room.onChange = () => broadcast(code);
       room.deal(db); // sortea las definiciones (incrementa usos)
       rooms.set(code, room);
-      res.status(201).json(await withQr(code, requestBaseUrl(req.get("host"), req.protocol)));
+      res.status(201).json(await withQr(code, baseUrl));
     } catch (e) {
       res.status(400).json({ error: (e as Error).message });
     }
@@ -174,11 +188,24 @@ export function buildRouter(ctx: ApiContext): Router {
     try {
       const room = getRoom(req.params.code);
       const row = db.prepare(
-        "SELECT g.code, g.status, t.name AS theme, g.config FROM games g JOIN themes t ON t.id = g.theme_id WHERE g.code = ?"
-      ).get(room.code) as { code: string; status: string; theme: string; config: string } | undefined;
-      res.json({ ...(await withQr(room.code, requestBaseUrl(req.get("host"), req.protocol))), theme: row?.theme, config: row ? JSON.parse(row.config) : null });
+        "SELECT g.code, g.status, g.base_url AS baseUrl, t.name AS theme, g.config FROM games g JOIN themes t ON t.id = g.theme_id WHERE g.code = ?"
+      ).get(room.code) as { code: string; status: string; baseUrl: string | null; theme: string; config: string } | undefined;
+      const base = row?.baseUrl || requestBaseUrl(req.get("host"), req.protocol);
+      res.json({ ...(await withQr(room.code, base)), theme: row?.theme, config: row ? JSON.parse(row.config) : null });
     } catch (e) {
       res.status((e as { status?: number }).status ?? 500).json({ error: (e as Error).message });
+    }
+  });
+
+  /** Cambia la dirección del servidor de una partida y regenera links/QR. */
+  r.put("/games/:code/base-url", async (req, res) => {
+    try {
+      const room = getRoom(req.params.code);
+      const baseUrl = sanitizeBaseUrl(req.body?.baseUrl);
+      db.prepare("UPDATE games SET base_url = ? WHERE code = ?").run(baseUrl, room.code);
+      res.json(await withQr(room.code, baseUrl));
+    } catch (e) {
+      res.status(400).json({ error: (e as Error).message });
     }
   });
 

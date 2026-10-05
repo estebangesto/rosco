@@ -75,9 +75,15 @@ export function openDb(): Database.Database {
       theme_id INTEGER NOT NULL REFERENCES themes(id),
       config TEXT NOT NULL,
       status TEXT NOT NULL DEFAULT 'lobby',
+      base_url TEXT,
       created_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
   `);
+  // migración: partidas creadas antes de la columna base_url
+  const gcols = db.prepare("PRAGMA table_info(games)").all() as { name: string }[];
+  if (!gcols.some((c) => c.name === "base_url")) {
+    db.exec("ALTER TABLE games ADD COLUMN base_url TEXT");
+  }
   return db;
 }
 

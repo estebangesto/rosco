@@ -34,20 +34,15 @@
   }
 
   function render(st) {
-    var a = st.players[st.activePlayer], b = st.players[1 - st.activePlayer];
-
     if (st.status === "finished") {
-      var w = st.winner == null ? "Empate."
-        : "Ganó " + E(st.players[st.winner].name) + ".";
-      elMain.innerHTML = "<div class='public-main-grid'><div><svg id='rosco-main'></svg></div>" +
-        "<div><div class='eyebrow'>Partida terminada</div>" +
-        "<h2 class='h-display'>Fin del juego</h2>" +
-        "<p class='definition'>" + w + "</p>" + chips(a) + "</div></div>";
-      drawMain(a, "");
-      elSide.innerHTML = "<h2>" + E(b.name) + "</h2><svg id='rosco-side' class='side-rosco'></svg>";
-      drawSide(b, "");
+      var stage = document.querySelector(".stage-public");
+      stage.classList.add("final-mode");
+      stage.innerHTML = "<div class='panel' id='v-final'></div>";
+      RoscoUI.renderFinal(document.getElementById("v-final"), st);
       return;
     }
+    var a = st.players[st.activePlayer], b = st.players[1 - st.activePlayer];
+
     if (st.status === "lobby") {
       elMain.innerHTML = "<div class='waiting'>El juego está por comenzar…</div>";
       elSide.innerHTML = "<p class='muted'>—</p>";

@@ -174,6 +174,60 @@ input[type="checkbox"] { width: auto; accent-color: var(--blue); }
 .activity div { font-size: 13px; color: var(--muted); padding: 3px 0; }
 .activity div b { color: var(--ink); }
 
+/* ---------- pantalla final ---------- */
+.final { position: relative; overflow: hidden; border-radius: var(--radius); }
+.confetti { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+.confetti span {
+  position: absolute; top: -48px;
+  animation-name: cfall; animation-timing-function: cubic-bezier(.25,.5,.6,1);
+  animation-fill-mode: forwards;
+}
+@keyframes cfall { to { transform: translateY(110vh) rotate(340deg); opacity: .9; } }
+.final-hero { position: relative; z-index: 1; text-align: center; padding: 30px 16px 4px; }
+.final-trophy { font-size: 72px; line-height: 1; }
+.final-cheer { font-size: 19px; color: var(--blue-2); font-weight: 600; }
+.final-duel {
+  position: relative; z-index: 1;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 18px;
+}
+@media (max-width: 900px) { .final-duel { grid-template-columns: 1fr; } }
+.final-player.winner { border-color: var(--yellow); box-shadow: 0 0 0 1px var(--yellow); }
+.final-pname { font: 800 32px var(--font-display); text-transform: uppercase; letter-spacing: .04em; }
+.final-rosco { width: min(100%, 320px); height: auto; display: block; margin: 10px auto; }
+.final-stats { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0 4px; }
+.final-stats .chip { margin-top: 0; }
+.deflist { margin-top: 12px; border-top: 1px solid var(--line); }
+.defrow {
+  display: grid; grid-template-columns: 34px 1fr; gap: 10px;
+  padding: 9px 4px; border-bottom: 1px solid var(--line); align-items: start;
+}
+.defrow .lb {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font: 800 16px var(--font-display); color: #fff;
+}
+.defrow .lb.correct { background: var(--green); }
+.defrow .lb.wrong { background: var(--red); }
+.defrow .lb.passed { background: var(--yellow-deep); }
+.defrow .lb.unanswered { background: #3a5a70; }
+.defrow .wd { font-weight: 700; font-size: 16px; text-transform: uppercase; letter-spacing: .03em; }
+.defrow .df { color: var(--ink); font-size: 14.5px; margin-top: 2px; }
+.defrow .stxt { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; margin-top: 3px; }
+.st-ico { float: right; font-size: 19px; font-weight: 800; line-height: 1; }
+.stxt.correct, .st-ico.correct { color: #7ae0b7; }
+.stxt.wrong, .st-ico.wrong { color: #ff9ca1; }
+.stxt.passed, .st-ico.passed { color: var(--yellow); }
+.stxt.unanswered, .st-ico.unanswered { color: #8aa5b8; }
+
+/* modo final en vistas de jugador y pública: una sola columna */
+.stage-player.final-mode, .stage-public.final-mode { grid-template-columns: 1fr; max-width: 1100px; }
+.stage-player.final-mode .rosco-panel, .stage-player.final-mode .legend { display: none; }
+
+/* ---------- fila de dirección del servidor ---------- */
+.base-row { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; margin-bottom: 6px; }
+.base-row label { flex: 1 1 280px; }
+.base-row button { flex: 0 0 auto; margin-bottom: 1px; }
+
 /* ---------- vistas de juego ---------- */
 .stage-player {
   min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr;

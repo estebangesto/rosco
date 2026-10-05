@@ -270,7 +270,13 @@ export class GameRoom {
           ? `${pl.name} erró. Turno de ${this.players[other].name}.`
           : `${pl.name} pasó. Turno de ${this.players[other].name}.`;
     } else if (!pl.done && pl.timeMs > 0) {
-      this.status = "playing"; // el otro no puede jugar: sigue el mismo
+      // queda un solo jugador activo: no sigue el reloj, vuelve a espera
+      // listo para continuar (igual que cuando retorna el turno)
+      this.status = "paused";
+      this.pausedReason =
+        result === "wrong"
+          ? `${pl.name} erró. Turno en espera, listo para continuar.`
+          : `${pl.name} pasó la palabra. Turno en espera, listo para continuar.`;
     } else {
       this.finish();
       return;
@@ -319,6 +325,29 @@ export class GameRoom {
 
   /* ------------------------ snapshot ------------------------------- */
 
+  /** Detalle de cierre: definiciones y respuestas de ambos jugadores.
+      Solo se expone cuando la partida terminó. */
+  private finalPayload(): SnapshotFinal {
+    return {
+      winner: this.winner,
+      players: [0, 1].map((p) => {
+        const pl = this.players[p as 0 | 1];
+        return {
+          name: pl.name,
+          correct: pl.correct,
+          wrong: pl.wrong,
+          timeSec: Math.ceil(pl.timeMs / 1000),
+          letters: pl.letters.map((l) => ({
+            letter: l.letter,
+            status: l.status,
+            definition: l.clue.definition,
+            answer: l.clue.answer,
+          })),
+        };
+      }) as [SnapshotFinalPlayer, SnapshotFinalPlayer],
+    };
+  }
+
   snapshot(includeAnswers: boolean): Snapshot {
     const players = [0, 1].map((p) => {
       const pl = this.players[p as 0 | 1];
@@ -351,6 +380,7 @@ export class GameRoom {
       pausedReason: this.pausedReason,
       winner: this.winner,
       players,
+      ...(this.status === "finished" ? { final: this.finalPayload() } : {}),
     };
   }
 }
@@ -385,6 +415,27 @@ export interface Snapshot {
   pausedReason: string | null;
   winner: 0 | 1 | null;
   players: [SnapshotPlayer, SnapshotPlayer];
+  final?: SnapshotFinal;
+}
+
+export interface SnapshotFinalLetter {
+  letter: string;
+  status: LetterStatus;
+  definition: string;
+  answer: string;
+}
+
+export interface SnapshotFinalPlayer {
+  name: string;
+  correct: number;
+  wrong: number;
+  timeSec: number;
+  letters: SnapshotFinalLetter[];
+}
+
+export interface SnapshotFinal {
+  winner: 0 | 1 | null;
+  players: [SnapshotFinalPlayer, SnapshotFinalPlayer];
 }
 
 export function makeCode(): string {

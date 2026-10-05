@@ -45,11 +45,8 @@
 
     // panel de información
     if (st.status === "finished") {
-      var w = st.winner == null ? "Empate."
-        : "Ganó " + E(st.players[st.winner].name) + ".";
-      elBody.innerHTML = "<div class='eyebrow'>Partida terminada</div>" +
-        "<h2 class='h-display'>Fin del juego</h2>" +
-        "<p class='definition'>" + w + "</p>" + chips(me_);
+      document.querySelector(".stage-player").classList.add("final-mode");
+      RoscoUI.renderFinal(elBody, st);
       return;
     }
     if (st.status === "lobby") {

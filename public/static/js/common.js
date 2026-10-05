@@ -155,12 +155,100 @@
     }).length;
   }
 
+  /* ---------------- pantalla de cierre ---------------- */
+  var FINAL_ICONS = ["\uD83C\uDF89", "\uD83C\uDF8A", "\u2B50", "\uD83C\uDFC6", "\uD83E\uDD47", "\u2728", "\uD83C\uDF88"];
+
+  function finalStatusMeta(status) {
+    switch (status) {
+      case "correct": return { cls: "correct", ico: "\u2713", txt: "Correcta" };
+      case "wrong": return { cls: "wrong", ico: "\u2717", txt: "Incorrecta" };
+      case "passed": return { cls: "passed", ico: "\u21B7", txt: "Pasapalabra" };
+      default: return { cls: "unanswered", ico: "\u25CB", txt: "Sin responder" };
+    }
+  }
+
+  /**
+   * Pantalla final de la partida: ganador con festejo, estadísticas,
+   * ambos roscos y el detalle de definiciones de cada jugador.
+   * Se usa en las cuatro vistas (admin, jugador1, jugador2, público).
+   */
+  function renderFinal(box, st) {
+    var f = st.final;
+    if (!f) { box.innerHTML = "<div class='waiting'>Partida terminada.</div>"; return; }
+    var wname = f.winner == null ? null : f.players[f.winner].name;
+
+    var conf = "";
+    for (var i = 0; i < 30; i++) {
+      var left = (i * 37 + 11) % 100;
+      var delay = ((i * 53) % 60) / 10;
+      var dur = 3.2 + ((i * 29) % 25) / 10;
+      var size = 18 + ((i * 17) % 22);
+      conf += "<span style='left:" + left + "%;font-size:" + size + "px;" +
+        "animation-delay:" + delay.toFixed(1) + "s;animation-duration:" + dur.toFixed(1) + "s'>" +
+        FINAL_ICONS[i % FINAL_ICONS.length] + "</span>";
+    }
+
+    var h = "<div class='final'><div class='confetti' aria-hidden='true'>" + conf + "</div>";
+    h += "<div class='final-hero'>";
+    if (wname) {
+      h += "<div class='final-trophy'>\uD83C\uDFC6</div>" +
+        "<div class='eyebrow'>Partida terminada \u00B7 " + esc(st.code) + "</div>" +
+        "<h2 class='h-display'>\u00A1Gan\u00F3 " + esc(wname) + "!</h2>" +
+        "<p class='final-cheer'>\uD83C\uDF89 \u00A1Felicitaciones! \uD83C\uDF89</p>";
+    } else {
+      h += "<div class='final-trophy'>\uD83E\uDD1D</div>" +
+        "<div class='eyebrow'>Partida terminada \u00B7 " + esc(st.code) + "</div>" +
+        "<h2 class='h-display'>\u00A1Empate!</h2>" +
+        "<p class='final-cheer'>\uD83C\uDF8A Nadie se llev\u00F3 la copa esta vez \uD83C\uDF8A</p>";
+    }
+    h += "<p class='muted'>Tem\u00E1tica: " + esc(st.theme) + "</p></div>";
+
+    h += "<div class='final-duel'>";
+    f.players.forEach(function (p, idx) {
+      var total = p.correct + p.wrong;
+      var acc = total ? Math.round((p.correct / total) * 100) : 0;
+      var isW = f.winner === idx;
+      h += "<div class='panel final-player" + (isW ? " winner" : "") + "'>" +
+        "<div class='final-pname'>" + (isW ? "\uD83E\uDD47 " : "") + esc(p.name) + "</div>" +
+        "<svg id='final-rosco-" + idx + "' class='final-rosco' role='img' aria-label='Rosco de " + esc(p.name) + "'></svg>" +
+        "<div class='final-stats'>" +
+        "<span class='chip'>Aciertos<b>" + p.correct + "</b></span>" +
+        "<span class='chip'>Errores<b>" + p.wrong + "</b></span>" +
+        "<span class='chip'>Precisi\u00F3n<b>" + acc + "%</b></span>" +
+        "<span class='chip'>Tiempo<b>" + fmtTime(p.timeSec) + "</b></span>" +
+        "</div>";
+      h += "<div class='deflist'>";
+      p.letters.forEach(function (l) {
+        var m = finalStatusMeta(l.status);
+        h += "<div class='defrow'>" +
+          "<div class='lb " + m.cls + "'>" + esc(l.letter) + "</div>" +
+          "<div><div class='wd'>" + esc(l.answer) +
+          " <span class='st-ico " + m.cls + "' title='" + m.txt + "'>" + m.ico + "</span></div>" +
+          "<div class='df'>" + esc(l.definition) + "</div>" +
+          "<div class='stxt " + m.cls + "'>" + m.txt + "</div></div>" +
+          "</div>";
+      });
+      h += "</div></div>";
+    });
+    h += "</div></div>";
+
+    box.innerHTML = h;
+    f.players.forEach(function (p, idx) {
+      var svg = document.getElementById("final-rosco-" + idx);
+      if (svg) renderRosco(svg, p.letters.map(function (l) {
+        var vs = (l.status === "current" || l.status === "pending") ? "pending" : l.status;
+        return { letter: l.letter, status: vs };
+      }), { size: 300, compact: true });
+    });
+  }
+
   window.RoscoUI = {
     renderRosco: renderRosco,
     fmtTime: fmtTime,
     connectGame: connectGame,
     esc: esc,
     pendingCount: pendingCount,
+    renderFinal: renderFinal,
   };
 })();
 

@@ -84,25 +84,41 @@
       playerNames: [document.getElementById("np-p1").value, document.getElementById("np-p2").value],
       minutes: Number(minSel.value),
     };
-    api("/games", { method: "POST", body: JSON.stringify(body) }).then(function (g) {
-      var h = qrCard("Jugador 1", g.links.jugador1, g.qr.jugador1, g.code) +
-        qrCard("Jugador 2", g.links.jugador2, g.qr.jugador2, g.code) +
-        qrCard("Vista del público", g.links.publico, g.qr.publico, g.code) +
-        qrCard("Moderador (este panel)", g.links.admin, g.qr.admin, g.code) +
-        "<p><button class='ghost' id='np-goto-mod'>Ir a moderación</button> " +
-        "<span class='muted'>Los QR apuntan a la IP de red local de este servidor.</span></p>";
-      var box = document.getElementById("np-result");
-      box.innerHTML = h;
-      box.querySelectorAll("[data-copy]").forEach(function (b) {
-        b.addEventListener("click", function () { copyText(b.dataset.copy, b); });
-      });
-      document.getElementById("np-goto-mod").addEventListener("click", function () {
-        document.getElementById("md-code").value = g.code;
-        document.querySelector("[data-tab=moderacion]").click();
-        document.getElementById("md-join").click();
-      });
-    }).catch(function (e) { alert(e.message); });
+    var baseField = document.getElementById("np-base-pre");
+    if (baseField && baseField.value.trim()) body.baseUrl = baseField.value.trim();
+    api("/games", { method: "POST", body: JSON.stringify(body) })
+      .then(renderAccess)
+      .catch(function (e) { alert(e.message); });
   });
+
+  function renderAccess(g) {
+    var h = "<div class='base-row'>" +
+      "<label>Dirección del servidor (IP o dominio)" +
+      "<input id='np-base' class='mono' type='text' value='" + E(g.baseUrl || "") + "' placeholder='http://192.168.1.20:3000'/></label>" +
+      "<button class='ghost' id='np-base-apply'>Aplicar</button></div>" +
+      "<p class='muted' style='font-size:13px'>Los links y códigos QR se generan con esta dirección. Si la cambiás, se regeneran con la nueva.</p>" +
+      qrCard("Jugador 1", g.links.jugador1, g.qr.jugador1, g.code) +
+      qrCard("Jugador 2", g.links.jugador2, g.qr.jugador2, g.code) +
+      qrCard("Vista del público", g.links.publico, g.qr.publico, g.code) +
+      qrCard("Moderador (este panel)", g.links.admin, g.qr.admin, g.code) +
+      "<p><button class='ghost' id='np-goto-mod'>Ir a moderación</button></p>";
+    var box = document.getElementById("np-result");
+    box.innerHTML = h;
+    box.querySelectorAll("[data-copy]").forEach(function (b) {
+      b.addEventListener("click", function () { copyText(b.dataset.copy, b); });
+    });
+    document.getElementById("np-base-apply").addEventListener("click", function () {
+      var v = document.getElementById("np-base").value;
+      api("/games/" + g.code + "/base-url", { method: "PUT", body: JSON.stringify({ baseUrl: v }) })
+        .then(renderAccess)
+        .catch(function (e) { alert(e.message); });
+    });
+    document.getElementById("np-goto-mod").addEventListener("click", function () {
+      document.getElementById("md-code").value = g.code;
+      document.querySelector("[data-tab=moderacion]").click();
+      document.getElementById("md-join").click();
+    });
+  }
 
   // si viene #juego=CODIGO, ir directo a moderación
   (function () {
@@ -127,18 +143,21 @@
     modConn = RoscoUI.connectGame(code, "admin", { onState: renderMod, onError: function (e) { alert(e); } });
   });
 
-  // Atajos de teclado del moderador: 1/2/3 juzgan, 4 pausa.
+  // Atajos de teclado del moderador: 1/2/3 juzgan; 4 pausa o reanuda según el estado.
   document.addEventListener("keydown", function (e) {
     if (!modConn || !modState) return;
     var tag = (e.target && e.target.tagName) || "";
     if (/^(INPUT|TEXTAREA|SELECT|BUTTON)$/.test(tag)) return;
     if (document.getElementById("tab-moderacion").hidden) return;
-    if (modState.status !== "playing") return;
     var ap = modState.players[modState.activePlayer];
-    if (e.key === "1" && ap.current) doJudge("correct");
-    else if (e.key === "2" && ap.current) doJudge("wrong");
-    else if (e.key === "3" && ap.current) doJudge("pass");
-    else if (e.key === "4") doPause();
+    if (modState.status === "playing") {
+      if (e.key === "1" && ap.current) doJudge("correct");
+      else if (e.key === "2" && ap.current) doJudge("wrong");
+      else if (e.key === "3" && ap.current) doJudge("pass");
+      else if (e.key === "4") doPause();
+    } else if (modState.status === "paused" && e.key === "4") {
+      doResume();
+    }
   });
 
   function doJudge(res) {
@@ -155,6 +174,13 @@
     if (!modConn || !modState || modState.status !== "playing") return;
     logEvent("Pausa excepcional.");
     modConn.send({ type: "pause" });
+  }
+
+  function doResume() {
+    if (!modConn || !modState || modState.status !== "paused") return;
+    var ap = modState.players[modState.activePlayer];
+    logEvent("<b>" + E(ap.name) + "</b> retomó el turno.");
+    modConn.send({ type: "resume" });
   }
 
   function logEvent(html) {
@@ -183,6 +209,10 @@
   function renderMod(st) {
     modState = st;
     var box = document.getElementById("md-body");
+    if (st.status === "finished") {
+      RoscoUI.renderFinal(box, st);
+      return;
+    }
     var ap = st.players[st.activePlayer];
 
     var badge = "En espera", bcls = "badge wait";
@@ -200,11 +230,6 @@
         "<h2 class='h-display'>Lista para empezar</h2>" +
         "<p class='definition'>Cuando los jugadores estén conectados, iniciá la partida.</p>" +
         "<p><button class='ok' id='md-start'>Iniciar partida</button></p>";
-    } else if (st.status === "finished") {
-      var w = st.winner == null ? "Empate." : "Ganó " + E(st.players[st.winner].name) + ".";
-      h += "<div class='eyebrow'>Partida terminada</div>" +
-        "<h2 class='h-display'>Fin del juego</h2>" +
-        "<p class='definition'>" + w + "</p>" + chips(ap);
     } else if (ap.current) {
       h += "<div class='eyebrow'>" + E(ap.current.hint) + " · " + E(ap.name) + "</div>" +
         "<h2 class='h-display'>Letra " + E(ap.current.letter) + "</h2>" +
@@ -215,7 +240,7 @@
         "</div></div>" + chips(ap);
       if (st.status === "paused") {
         h += "<p class='muted' style='margin-top:12px'>" + E(st.pausedReason || "") + "</p>" +
-          "<p><button class='ok' id='md-resume'>Reanudar turno de " + E(ap.name) + "</button></p>";
+          "<p><button class='ok' id='md-resume'><span class='btn-label'><kbd class='key'>4</kbd>Reanudar turno de " + E(ap.name) + "</span></button></p>";
       }
     }
     h += "</div></div></div>";
@@ -231,7 +256,8 @@
         "<button class='btn-big warn' data-j='pass'><span class='btn-label'><kbd class='key'>3</kbd>Pasapalabra</span><span class='ico'>↷</span></button>" +
         "<button class='btn-big ghost' id='md-pause'><span class='btn-label'><kbd class='key'>4</kbd>Pausa excepcional</span></button>" +
         "<p class='muted' style='font-size:13px;margin-top:2px'>Atajos de teclado: " +
-        "<kbd class='key sm'>1</kbd> <kbd class='key sm'>2</kbd> <kbd class='key sm'>3</kbd> <kbd class='key sm'>4</kbd></p>";
+        "<kbd class='key sm'>1</kbd> <kbd class='key sm'>2</kbd> <kbd class='key sm'>3</kbd> juzgan · " +
+        "<kbd class='key sm'>4</kbd> pausa o reanuda</p>";
     }
     h += "<div class='activity'><h4>Actividad reciente</h4><div id='md-log'>" +
       (modLog.join("") || "<div>Sin actividad todavía.</div>") + "</div></div>";
@@ -258,10 +284,7 @@
       modConn.send({ type: "start" });
     });
     var btnResume = document.getElementById("md-resume");
-    if (btnResume) btnResume.addEventListener("click", function () {
-      logEvent("<b>" + E(ap.name) + "</b> retomó el turno.");
-      modConn.send({ type: "resume" });
-    });
+    if (btnResume) btnResume.addEventListener("click", doResume);
     var btnPause = document.getElementById("md-pause");
     if (btnPause) btnPause.addEventListener("click", doPause);
   }
