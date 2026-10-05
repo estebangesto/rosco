@@ -108,6 +108,9 @@ wss.on("connection", (ws) => {
           (client.role === "player2" && room.activePlayer === 1);
         if (!isAdmin && !isTurnPlayer) throw new Error("Solo el moderador o el jugador en turno puede reanudar.");
         room.resume();
+      } else if (msg.type === "pause") {
+        if (!client.code || client.role !== "admin") throw new Error("Solo el moderador puede pausar.");
+        rooms.get(client.code)!.pause();
       } else if (msg.type === "start") {
         if (!client.code || client.role !== "admin") throw new Error("Solo el moderador puede iniciar.");
         rooms.get(client.code)!.start();

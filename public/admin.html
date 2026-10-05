@@ -4,70 +4,102 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>El Rosco — Administración</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="/static/css/style.css" />
 </head>
 <body>
-<h1>El Rosco — Administración</h1>
-<div class="tabs">
-  <button data-tab="partida" class="active">Partida</button>
-  <button data-tab="moderacion">Moderación</button>
-  <button data-tab="tematicas">Temáticas</button>
-  <button data-tab="palabras">Palabras</button>
+<div class="topbar">
+  <div>
+    <h1>El Rosco</h1>
+    <div class="sub">Administración de la partida</div>
+  </div>
+  <div class="tabs">
+    <button data-tab="partida" class="active">Partida</button>
+    <button data-tab="moderacion">Moderación</button>
+    <button data-tab="tematicas">Temáticas</button>
+    <button data-tab="palabras">Palabras</button>
+  </div>
 </div>
 
-<section id="tab-partida" class="card">
-  <h2>Nueva partida</h2>
-  <label>Temática
-    <select id="np-theme"></select>
-  </label>
-  <div class="row">
-    <div><label>Jugador 1 <input id="np-p1" type="text" placeholder="Nombre" /></label></div>
-    <div><label>Jugador 2 <input id="np-p2" type="text" placeholder="Nombre" /></label></div>
-    <div><label>Tiempo por jugador (min, 1–10)
-      <select id="np-min"></select>
-    </label></div>
-  </div>
-  <p><button id="np-create">Crear partida</button></p>
-  <div id="np-result"></div>
-</section>
+<div class="wrap">
 
-<section id="tab-moderacion" class="card" hidden>
-  <h2>Moderación</h2>
-  <div class="row">
-    <label>Código de partida <input id="md-code" type="text" placeholder="ABC123" style="text-transform:uppercase" /></label>
-    <button id="md-join">Conectar</button>
-  </div>
-  <div id="md-body"></div>
-</section>
+  <section id="tab-partida">
+    <div class="stage-mod">
+      <div class="panel">
+        <h2>Preparar partida</h2>
+        <p class="desc">El moderador configura la sesión y comparte los accesos para jugadores y público.</p>
+        <div class="row">
+          <div><label>Jugador 1<input id="np-p1" type="text" placeholder="Nombre" /></label></div>
+          <div><label>Jugador 2<input id="np-p2" type="text" placeholder="Nombre" /></label></div>
+        </div>
+        <div class="row">
+          <div><label>Tiempo por jugador<select id="np-min"></select></label></div>
+          <div><label>Temática de la partida<select id="np-theme"></select></label></div>
+        </div>
+        <p style="margin-top:20px"><button id="np-create">Crear partida</button></p>
+      </div>
+      <div class="panel">
+        <h2>Accesos a la partida</h2>
+        <p class="desc">Cada dispositivo abre su propia vista. La partida se identifica con un código corto.</p>
+        <div id="np-result"><p class="muted">Creá una partida para ver sus accesos y códigos QR.</p></div>
+      </div>
+    </div>
+  </section>
 
-<section id="tab-tematicas" class="card" hidden>
-  <h2>Temáticas</h2>
-  <div class="row">
-    <input id="th-name" type="text" placeholder="Nombre de la nueva temática" />
-    <button id="th-create">Crear (arranca vacía)</button>
-  </div>
-  <div id="th-list" style="margin-top:12px"></div>
-</section>
+  <section id="tab-moderacion" hidden>
+    <div class="panel">
+      <h2>Moderación</h2>
+      <p class="desc">La respuesta nunca se oculta en esta vista.</p>
+      <div class="row" style="max-width:520px">
+        <div><label>Código de partida<input id="md-code" type="text" placeholder="ABC123" style="text-transform:uppercase" /></label></div>
+        <div style="flex:0 0 auto"><label>&nbsp;</label><button id="md-join">Conectar</button></div>
+      </div>
+      <div id="md-body" style="margin-top:18px"></div>
+    </div>
+  </section>
 
-<section id="tab-palabras" class="card" hidden>
-  <h2>Palabras</h2>
-  <div class="row">
-    <label>Temática <select id="pw-theme"></select></label>
-    <label>Letra <select id="pw-letter"></select></label>
-    <label style="font-weight:normal"><input type="checkbox" id="pw-enabled" checked /> Letra habilitada</label>
-  </div>
-  <p class="muted" id="pw-stats"></p>
-  <table class="defs"><thead><tr>
-    <th>Palabra</th><th>Definición</th><th>Pista</th><th>Alternativas</th><th>Activa</th><th>Usos</th><th></th>
-  </tr></thead><tbody id="pw-rows"></tbody></table>
-  <div class="row" style="margin-top:12px">
-    <button id="pw-add" class="ghost">+ Agregar definición</button>
-    <span style="flex:1"></span>
-    <button id="pw-reset" class="warn">Restablecer</button>
-    <button id="pw-save" class="ok">Guardar todo el listado</button>
-  </div>
-  <p class="muted">Los cambios quedan en borrador hasta apretar <b>Guardar</b>. <b>Restablecer</b> descarta el borrador y recarga desde el servidor.</p>
-</section>
+  <section id="tab-tematicas" hidden>
+    <div class="panel">
+      <h2>Temáticas</h2>
+      <p class="desc">Cada temática mantiene su propio banco de definiciones. Las nuevas comienzan sin palabras.</p>
+      <div class="row" style="max-width:560px">
+        <div><label>Nueva temática<input id="th-name" type="text" placeholder="Nombre de la nueva temática" /></label></div>
+        <div style="flex:0 0 auto"><label>&nbsp;</label><button id="th-create">Crear vacía</button></div>
+      </div>
+      <div id="th-list" style="margin-top:16px"></div>
+    </div>
+  </section>
+
+  <section id="tab-palabras" hidden>
+    <div class="panel">
+      <h2>Palabras</h2>
+      <p class="desc">Gestioná las definiciones de cada letra dentro de la temática seleccionada.</p>
+      <div class="row">
+        <div><label>Temática<select id="pw-theme"></select></label></div>
+        <div><label>Letra<select id="pw-letter"></select></label></div>
+        <div style="flex:0 0 auto"><label>&nbsp;</label>
+          <label style="font-weight:normal;display:flex;gap:8px;align-items:center;margin:0">
+            <input type="checkbox" id="pw-enabled" checked /> Letra habilitada
+          </label>
+        </div>
+      </div>
+      <p class="muted" id="pw-stats"></p>
+      <table class="defs"><thead><tr>
+        <th>Palabra</th><th>Definición</th><th>Pista</th><th>Alternativas</th><th>Activa</th><th>Usos</th><th></th>
+      </tr></thead><tbody id="pw-rows"></tbody></table>
+      <div class="row" style="margin-top:16px">
+        <div style="flex:0 0 auto"><button id="pw-add" class="ghost">+ Agregar definición</button></div>
+        <div style="flex:1"></div>
+        <div style="flex:0 0 auto"><button id="pw-reset" class="warn">Restablecer</button></div>
+        <div style="flex:0 0 auto"><button id="pw-save" class="ok">Guardar todo el listado</button></div>
+      </div>
+      <p class="muted">Los cambios quedan en borrador hasta apretar <b>Guardar</b>. <b>Restablecer</b> descarta el borrador y recarga desde el servidor.</p>
+    </div>
+  </section>
+
+</div>
 
 <script src="/static/js/common.js"></script>
 <script src="/static/js/admin.js"></script>

@@ -2,48 +2,88 @@
    el rosco del otro jugador con su próxima letra y tiempo restante. */
 (function () {
   "use strict";
+  var E = RoscoUI.esc;
   var m = location.pathname.match(/\/juego\/([^/]+)\/publico/);
-  if (!m) { document.body.innerHTML = "<div class='card'>URL inválida.</div>"; return; }
+  if (!m) { document.body.innerHTML = "<div class='waiting'>URL inválida.</div>"; return; }
   var code = m[1].toUpperCase();
 
-  var elTheme = document.getElementById("v-theme");
   var elMain = document.getElementById("v-main");
   var elSide = document.getElementById("v-side");
 
-  function panel(p, big) {
-    var size = big ? 380 : 180;
-    var html = "<h2>" + RoscoUI.esc(p.name) + "</h2>" +
-      "<div class='timer" + (p.timeSec <= 30 && !p.done ? " low" : "") + "'>" + RoscoUI.fmtTime(p.timeSec) + "</div>" +
-      "<div class='score'>✅ " + p.correct + " &nbsp; ❌ " + p.wrong + "</div>" +
-      "<div style='text-align:center'><svg id='rosco-" + (big ? "main" : "side") + "'></svg></div>";
-    if (big && p.current) {
-      html += "<div class='clue'><span class='hint'>" + RoscoUI.esc(p.current.hint) + ":</span><br/>" +
-        RoscoUI.esc(p.current.definition) + "</div>";
-    }
-    return html;
+  function chips(p) {
+    return "<div class='chips'>" +
+      "<span class='chip'>Aciertos<b>" + p.correct + "</b></span>" +
+      "<span class='chip'>Errores<b>" + p.wrong + "</b></span>" +
+      "<span class='chip'>Pendientes<b>" + RoscoUI.pendingCount(p) + "</b></span></div>";
+  }
+
+  function drawMain(p, sub) {
+    var svg = document.getElementById("rosco-main");
+    if (svg) RoscoUI.renderRosco(svg, p.letters, {
+      size: Math.min(430, window.innerWidth - 120),
+      center: { name: p.name, time: RoscoUI.fmtTime(p.timeSec), sub: sub },
+    });
+  }
+
+  function drawSide(p, sub) {
+    var svg = document.getElementById("rosco-side");
+    if (svg) RoscoUI.renderRosco(svg, p.letters, {
+      size: 230, compact: true,
+      center: { name: p.name, time: RoscoUI.fmtTime(p.timeSec), sub: sub },
+    });
   }
 
   function render(st) {
-    elTheme.textContent = st.theme;
     var a = st.players[st.activePlayer], b = st.players[1 - st.activePlayer];
+
     if (st.status === "finished") {
-      var w = st.winner == null ? "Empate." : "Ganó " + RoscoUI.esc(st.players[st.winner].name) + ".";
-      elMain.innerHTML = "<h2>Juego terminado</h2><div class='big'>" + w + "</div>" + panel(a, true);
-      elSide.innerHTML = panel(b, false);
-    } else if (st.status === "lobby") {
-      elMain.innerHTML = "<div class='waiting'>El juego está por comenzar…</div>";
-      elSide.innerHTML = "";
-    } else {
-      elMain.innerHTML = panel(a, true);
-      var next = b.current ? b.current.letter : "—";
-      elSide.innerHTML = panel(b, false) +
-        "<div class='muted'>Próxima letra: <b>" + RoscoUI.esc(next) + "</b></div>";
+      var w = st.winner == null ? "Empate."
+        : "Ganó " + E(st.players[st.winner].name) + ".";
+      elMain.innerHTML = "<div class='public-main-grid'><div><svg id='rosco-main'></svg></div>" +
+        "<div><div class='eyebrow'>Partida terminada</div>" +
+        "<h2 class='h-display'>Fin del juego</h2>" +
+        "<p class='definition'>" + w + "</p>" + chips(a) + "</div></div>";
+      drawMain(a, "");
+      elSide.innerHTML = "<h2>" + E(b.name) + "</h2><svg id='rosco-side' class='side-rosco'></svg>";
+      drawSide(b, "");
+      return;
     }
-    var sm = document.getElementById("rosco-main");
-    var ss = document.getElementById("rosco-side");
-    if (sm) RoscoUI.renderRosco(sm, a.letters, { size: 380 });
-    if (ss) RoscoUI.renderRosco(ss, b.letters, { size: 180 });
+    if (st.status === "lobby") {
+      elMain.innerHTML = "<div class='waiting'>El juego está por comenzar…</div>";
+      elSide.innerHTML = "<p class='muted'>—</p>";
+      return;
+    }
+
+    // jugador activo en grande
+    var info = "";
+    if (a.current && st.status !== "paused") {
+      info = "<div class='eyebrow'>Jugador activo · " + E(a.current.hint) + "</div>" +
+        "<h2 class='h-display'>Letra " + E(a.current.letter) + "</h2>" +
+        "<p class='definition'>" + E(a.current.definition) + "</p>";
+    } else if (st.status === "paused") {
+      info = "<div class='eyebrow'>Pausa</div>" +
+        "<h2 class='h-display'>Juego en pausa</h2>" +
+        "<p class='definition'>" + E(st.pausedReason || "") + "</p>";
+    }
+    elMain.innerHTML = "<div class='public-main-grid'><div><svg id='rosco-main'></svg></div>" +
+      "<div>" + info + chips(a) + "</div></div>";
+    drawMain(a, st.status === "playing" ? "turno activo" : "");
+
+    // el otro jugador al costado
+    var next = "—";
+    for (var i = 0; i < b.letters.length; i++) {
+      if (b.letters[i].status === "current" || b.letters[i].status === "pending") { next = b.letters[i].letter; break; }
+    }
+    elSide.innerHTML = "<h2 style='font-size:30px'>" + E(b.name) + "</h2>" +
+      "<svg id='rosco-side' class='side-rosco'></svg>" +
+      "<div class='side-stats'>" +
+      "<div><div class='k'>Próxima letra</div><div class='v'>" + E(next) + "</div></div>" +
+      "<div style='text-align:right'><div class='k'>Tiempo restante</div><div class='v'>" + RoscoUI.fmtTime(b.timeSec) + "</div></div>" +
+      "</div>" +
+      "<p class='muted' style='margin-top:12px'>Espera mientras responde " + E(a.name) + ".</p>";
+    drawSide(b, st.status === "playing" ? "en espera" : "");
   }
 
   RoscoUI.connectGame(code, "public", { onState: render, onError: function () {} });
 })();
+

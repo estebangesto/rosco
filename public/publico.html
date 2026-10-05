@@ -4,13 +4,20 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>El Rosco — Vista pública</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="/static/css/style.css" />
 </head>
 <body>
-<div class="card"><h1>El Rosco <span class="pill" id="v-theme"></span></h1></div>
-<div class="layout-public">
-  <div class="card" id="v-main"></div>
-  <div class="card" id="v-side"></div>
+<div class="stage-public">
+  <div class="panel">
+    <div id="v-main"></div>
+  </div>
+  <div class="panel">
+    <div class="eyebrow">El otro jugador</div>
+    <div id="v-side"></div>
+  </div>
 </div>
 <script src="/static/js/common.js"></script>
 <script src="/static/js/publico.js"></script>

@@ -15,6 +15,23 @@
     });
   }
 
+  function copyText(t, btn) {
+    function done() {
+      var old = btn.textContent;
+      btn.textContent = "¡Copiado!";
+      setTimeout(function () { btn.textContent = old; }, 1600);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(t).then(done, function () { fallback(); });
+    } else fallback();
+    function fallback() {
+      var ta = document.createElement("textarea");
+      ta.value = t; document.body.appendChild(ta); ta.select();
+      try { document.execCommand("copy"); } catch (e) {}
+      document.body.removeChild(ta); done();
+    }
+  }
+
   /* ---------------- tabs ---------------- */
   var tabs = document.querySelectorAll(".tabs button");
   tabs.forEach(function (b) {
@@ -34,7 +51,7 @@
   var minSel = document.getElementById("np-min");
   for (var mm = 1; mm <= 10; mm++) {
     var o = document.createElement("option");
-    o.value = mm; o.textContent = mm + " min";
+    o.value = mm; o.textContent = mm + (mm === 1 ? " minuto" : " minutos");
     if (mm === 3) o.selected = true;
     minSel.appendChild(o);
   }
@@ -52,6 +69,15 @@
   }
   loadThemeOptions();
 
+  function qrCard(title, link, qr, code) {
+    return "<div class='qr-card'><div class='meta'>" +
+      "<div class='t'>" + E(title) + "</div>" +
+      "<div class='link mono'>" + E(link) + "</div>" +
+      "<div class='muted mono' style='font-size:12px'>Código: " + E(code) + "</div>" +
+      "<button class='ghost' data-copy='" + E(link) + "'>Copiar acceso</button>" +
+      "</div><img src='" + qr + "' alt='QR " + E(title) + "'/></div>";
+  }
+
   document.getElementById("np-create").addEventListener("click", function () {
     var body = {
       themeId: Number(document.getElementById("np-theme").value),
@@ -59,15 +85,17 @@
       minutes: Number(minSel.value),
     };
     api("/games", { method: "POST", body: JSON.stringify(body) }).then(function (g) {
-      var h = "<h3>Partida " + E(g.code) + " creada</h3><div class='row'>";
-      [["Jugador 1", "jugador1"], ["Jugador 2", "jugador2"], ["Público", "publico"]].forEach(function (x) {
-        h += "<div class='qr'><img src='" + g.qr[x[1]] + "' alt='QR " + x[0] + "'/>" +
-          "<div><b>" + x[0] + "</b></div><small>" + E(g.links[x[1]]) + "</small></div>";
-      });
-      h += "</div><p><button class='ghost' id='np-goto-mod'>Ir a moderación</button> " +
+      var h = qrCard("Jugador 1", g.links.jugador1, g.qr.jugador1, g.code) +
+        qrCard("Jugador 2", g.links.jugador2, g.qr.jugador2, g.code) +
+        qrCard("Vista del público", g.links.publico, g.qr.publico, g.code) +
+        qrCard("Moderador (este panel)", g.links.admin, g.qr.admin, g.code) +
+        "<p><button class='ghost' id='np-goto-mod'>Ir a moderación</button> " +
         "<span class='muted'>Los QR apuntan a la IP de red local de este servidor.</span></p>";
       var box = document.getElementById("np-result");
       box.innerHTML = h;
+      box.querySelectorAll("[data-copy]").forEach(function (b) {
+        b.addEventListener("click", function () { copyText(b.dataset.copy, b); });
+      });
       document.getElementById("np-goto-mod").addEventListener("click", function () {
         document.getElementById("md-code").value = g.code;
         document.querySelector("[data-tab=moderacion]").click();
@@ -87,64 +115,132 @@
   })();
 
   /* ---------------- moderación ---------------- */
-  var modConn = null, modCode = null;
+  var modConn = null, modCode = null, modLog = [];
 
   document.getElementById("md-join").addEventListener("click", function () {
     var code = document.getElementById("md-code").value.trim().toUpperCase();
     if (!code) return;
     if (modConn) modConn.close();
     modCode = code;
+    modLog = [];
     modConn = RoscoUI.connectGame(code, "admin", { onState: renderMod, onError: function (e) { alert(e); } });
   });
 
-  function miniRosco(p) {
-    return "<div><b>" + E(p.name) + "</b> " + (p.isActive ? "▶" : "") +
-      "<div class='timer" + (p.timeSec <= 30 && !p.done ? " low" : "") + "'>" + RoscoUI.fmtTime(p.timeSec) + "</div>" +
-      "<div class='score'>✅" + p.correct + " ❌" + p.wrong + "</div>" +
-      "<svg id='mod-rosco-" + E(p.name) + "'></svg></div>";
+  function logEvent(html) {
+    var d = new Date();
+    var hh = ("0" + d.getHours()).slice(-2), mi = ("0" + d.getMinutes()).slice(-2);
+    modLog.unshift("<div><span class='muted'>" + hh + ":" + mi + "</span> " + html + "</div>");
+    modLog = modLog.slice(0, 12);
+    var box = document.getElementById("md-log");
+    if (box) box.innerHTML = modLog.join("") || "<div>Sin actividad todavía.</div>";
+  }
+
+  function chips(p) {
+    return "<div class='chips'>" +
+      "<span class='chip'>Aciertos<b>" + p.correct + "</b></span>" +
+      "<span class='chip'>Errores<b>" + p.wrong + "</b></span>" +
+      "<span class='chip'>Pendientes<b>" + RoscoUI.pendingCount(p) + "</b></span></div>";
+  }
+
+  function playerCard(p, isActive) {
+    var sub = p.done ? "terminó" : (isActive ? "letra " + (p.current ? p.current.letter : "—") : "en espera");
+    return "<div class='player-card" + (isActive ? " active" : "") + "'>" +
+      "<div class='nm'>" + E(p.name) + "</div>" +
+      "<div class='st mono'>" + RoscoUI.fmtTime(p.timeSec) + " · " + E(sub) + "</div></div>";
   }
 
   function renderMod(st) {
     var box = document.getElementById("md-body");
-    var h = "<h3>Partida " + E(st.code) + " — " + E(st.status) + " <span class='pill'>" + E(st.theme) + "</span></h3>";
-    if (st.status === "lobby") {
-      h += "<p><button class='ok' id='md-start'>Iniciar partida</button></p>";
-    }
-    h += "<div class='grid2'><div>" + miniRosco(st.players[0]) + "</div><div>" + miniRosco(st.players[1]) + "</div></div>";
-
     var ap = st.players[st.activePlayer];
-    if (st.status === "playing" && ap.current) {
-      h += "<div class='card'><h3>Letra actual: " + E(ap.current.letter) + " — " + E(ap.name) + "</h3>" +
-        "<div class='clue'><span class='hint'>" + E(ap.current.hint) + ":</span><br/>" + E(ap.current.definition) + "</div>" +
-        "<div class='answer'><b>Respuesta:</b> " + E(ap.current.answer) +
-        (ap.current.alt && ap.current.alt.length ? " <span class='muted'>(también: " + E(ap.current.alt.join(", ")) + ")</span>" : "") +
-        "</div>" +
-        "<div class='row'>" +
-        "<button class='ok' data-j='correct'>Correcto</button>" +
-        "<button class='err' data-j='wrong'>Error</button>" +
-        "<button class='warn' data-j='pass'>Pasapalabra</button>" +
-        "</div></div>";
-    }
-    if (st.status === "paused") {
-      h += "<div class='card'><p>" + E(st.pausedReason || "En pausa.") + "</p>" +
-        "<button class='ok' id='md-resume'>Reanudar turno de " + E(ap.name) + "</button></div>";
-    }
-    if (st.status === "finished") {
+
+    var badge = "En espera", bcls = "badge wait";
+    if (st.status === "playing") { badge = "En juego"; bcls = "badge"; }
+    else if (st.status === "paused") { badge = "En pausa"; bcls = "badge pause"; }
+    else if (st.status === "finished") { badge = "Terminada"; bcls = "badge wait"; }
+
+    var h = "<div class='stage-mod'>";
+
+    // --- panel izquierdo: rosco del jugador activo + letra actual ---
+    h += "<div class='panel panel-2'><span class='" + bcls + "'>" + badge + "</span>";
+    h += "<div class='mod-rosco-grid' style='margin-top:14px'><div><svg id='mod-rosco'></svg></div><div>";
+    if (st.status === "lobby") {
+      h += "<div class='eyebrow'>Partida " + E(st.code) + " · " + E(st.theme) + "</div>" +
+        "<h2 class='h-display'>Lista para empezar</h2>" +
+        "<p class='definition'>Cuando los jugadores estén conectados, iniciá la partida.</p>" +
+        "<p><button class='ok' id='md-start'>Iniciar partida</button></p>";
+    } else if (st.status === "finished") {
       var w = st.winner == null ? "Empate." : "Ganó " + E(st.players[st.winner].name) + ".";
-      h += "<div class='card'><h3>Juego terminado. " + w + "</h3></div>";
+      h += "<div class='eyebrow'>Partida terminada</div>" +
+        "<h2 class='h-display'>Fin del juego</h2>" +
+        "<p class='definition'>" + w + "</p>" + chips(ap);
+    } else if (ap.current) {
+      h += "<div class='eyebrow'>" + E(ap.current.hint) + " · " + E(ap.name) + "</div>" +
+        "<h2 class='h-display'>Letra " + E(ap.current.letter) + "</h2>" +
+        "<p class='definition'>" + E(ap.current.definition) + "</p>" +
+        "<div class='answer-box'><div class='lbl'>Respuesta visible al moderador</div>" +
+        "<div class='val'>" + E(ap.current.answer || "—") +
+        (ap.current.alt && ap.current.alt.length ? " <span class='muted' style='font-size:15px'>(también: " + E(ap.current.alt.join(", ")) + ")</span>" : "") +
+        "</div></div>" + chips(ap);
+      if (st.status === "paused") {
+        h += "<p class='muted' style='margin-top:12px'>" + E(st.pausedReason || "") + "</p>" +
+          "<p><button class='ok' id='md-resume'>Reanudar turno de " + E(ap.name) + "</button></p>";
+      }
     }
+    h += "</div></div></div>";
+
+    // --- panel derecho: control de la ronda ---
+    h += "<div class='panel panel-2'><h2 style='font-size:28px'>Control de la ronda</h2>" +
+      "<p class='desc'>La respuesta nunca se oculta en esta vista.</p>";
+    h += playerCard(st.players[0], st.status !== "finished" && st.activePlayer === 0);
+    h += playerCard(st.players[1], st.status !== "finished" && st.activePlayer === 1);
+    if (st.status === "playing" && ap.current) {
+      h += "<button class='btn-big ok' data-j='correct'><span>Correcto</span><span class='ico'>✓</span></button>" +
+        "<button class='btn-big err' data-j='wrong'><span>Incorrecto</span><span class='ico'>✕</span></button>" +
+        "<button class='btn-big warn' data-j='pass'><span>Pasapalabra</span><span class='ico'>↷</span></button>" +
+        "<button class='btn-big ghost' id='md-pause'><span>Pausa excepcional</span></button>";
+    }
+    h += "<div class='activity'><h4>Actividad reciente</h4><div id='md-log'>" +
+      (modLog.join("") || "<div>Sin actividad todavía.</div>") + "</div></div>";
+    h += "</div></div>";
+
     box.innerHTML = h;
-    [0, 1].forEach(function (i) {
-      var svg = document.getElementById("mod-rosco-" + st.players[i].name);
-      if (svg) RoscoUI.renderRosco(svg, st.players[i].letters, { size: 200 });
+
+    var svg = document.getElementById("mod-rosco");
+    if (svg) RoscoUI.renderRosco(svg, ap.letters, {
+      size: 300,
+      center: {
+        name: ap.name,
+        time: RoscoUI.fmtTime(ap.timeSec),
+        sub: st.status === "playing" ? "turno activo" : (st.status === "paused" ? "en pausa" : ""),
+      },
     });
+
     box.querySelectorAll("[data-j]").forEach(function (b) {
-      b.addEventListener("click", function () { modConn.send({ type: "judge", result: b.dataset.j }); });
+      b.addEventListener("click", function () {
+        var res = b.dataset.j;
+        var names = { correct: "Correcto", wrong: "Incorrecto", pass: "Pasapalabra" };
+        logEvent("<b>" + E(ap.name) + "</b> · letra " + E(ap.current ? ap.current.letter : "?") +
+          " → <b>" + names[res] + "</b>");
+        modConn.send({ type: "judge", result: res });
+      });
     });
-    var rs = document.getElementById("md-resume");
-    if (rs) rs.addEventListener("click", function () { modConn.send({ type: "resume" }); });
-    var st2 = document.getElementById("md-start");
-    if (st2) st2.addEventListener("click", function () { modConn.send({ type: "start" }); });
+    var btnStart = document.getElementById("md-start");
+    if (btnStart) btnStart.addEventListener("click", function () {
+      logEvent("Se inició la partida.");
+      modConn.send({ type: "start" });
+    });
+    var btnResume = document.getElementById("md-resume");
+    if (btnResume) btnResume.addEventListener("click", function () {
+      logEvent("<b>" + E(ap.name) + "</b> retomó el turno.");
+      modConn.send({ type: "resume" });
+    });
+    var btnPause = document.getElementById("md-pause");
+    if (btnPause) btnPause.addEventListener("click", function () {
+      if (confirm("¿Pausar la partida?")) {
+        logEvent("Pausa excepcional.");
+        modConn.send({ type: "pause" });
+      }
+    });
   }
 
   /* ---------------- temáticas ---------------- */
@@ -152,8 +248,9 @@
     api("/themes").then(function (themes) {
       var box = document.getElementById("th-list");
       box.innerHTML = themes.map(function (t) {
-        return "<div class='row' style='margin-bottom:8px'><b>" + E(t.name) + "</b>" +
+        return "<div class='theme-row'><b>" + E(t.name) + "</b>" +
           "<span class='muted'>" + t.definitions + " definiciones</span>" +
+          "<span style='flex:1'></span>" +
           "<button class='ghost' data-ren='" + t.id + "'>Renombrar</button>" +
           "<button class='err' data-del='" + t.id + "'>Eliminar</button></div>";
       }).join("") || "<p class='muted'>No hay temáticas.</p>";
@@ -313,3 +410,4 @@
       .catch(function (e) { alert(e.message); });
   });
 })();
+

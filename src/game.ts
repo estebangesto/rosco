@@ -278,6 +278,14 @@ export class GameRoom {
     this.onChange();
   }
 
+  /** Pausa excepcional solicitada por el moderador (el reloj se detiene con el estado). */
+  pause(reason = "Pausa solicitada por el moderador."): void {
+    if (this.status !== "playing") throw new Error("Solo se puede pausar durante el juego.");
+    this.status = "paused";
+    this.pausedReason = reason;
+    this.onChange();
+  }
+
   /** Reanuda el turno pausado (lo confirma el moderador o el jugador al que le toca). */
   resume(): void {
     if (this.status !== "paused") throw new Error("No hay pausa que reanudar.");

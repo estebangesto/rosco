@@ -4,18 +4,27 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>El Rosco — Jugador</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="/static/css/style.css" />
 </head>
 <body>
-<div class="card" style="max-width:560px;margin:0 auto">
-  <h1 id="p-name">El Rosco</h1>
-  <div class="row" style="justify-content:space-between">
-    <div class="timer" id="p-time">--:--</div>
-    <div class="score" id="p-score"></div>
+<div class="stage-player">
+  <div class="panel rosco-panel">
+    <span class="badge wait" id="p-badge">En espera</span>
+    <svg id="rosco" role="img" aria-label="Rosco"></svg>
   </div>
-  <div style="text-align:center"><svg id="rosco"></svg></div>
-  <div id="p-clue"></div>
-  <div id="p-wait"></div>
+  <div class="panel info-panel">
+    <div id="p-body"></div>
+    <div class="legend" aria-hidden="true">
+      <span><i class="c"></i>Correcta</span>
+      <span><i class="e"></i>Incorrecta</span>
+      <span><i class="p"></i>Pasapalabra</span>
+      <span><i class="a"></i>Actual</span>
+      <span><i class="n"></i>Sin pasar</span>
+    </div>
+  </div>
 </div>
 <script src="/static/js/common.js"></script>
 <script src="/static/js/player.js"></script>
