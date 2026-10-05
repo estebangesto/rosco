@@ -12,6 +12,11 @@ export function getLanIp(): string {
 }
 
 export function baseUrl(): string {
+  // Dentro de Docker, las interfaces visibles son las del contenedor
+  // (ej. 172.x de la red bridge), no la LAN del host: en ese caso
+  // hay que fijar PUBLIC_BASE_URL, ej. http://192.168.1.50:3000
+  const override = (process.env.PUBLIC_BASE_URL || "").trim().replace(/\/+$/, "");
+  if (override) return override;
   const port = Number(process.env.PORT || 3000);
   return `http://${getLanIp()}:${port}`;
 }
