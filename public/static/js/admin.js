@@ -115,7 +115,7 @@
   })();
 
   /* ---------------- moderación ---------------- */
-  var modConn = null, modCode = null, modLog = [];
+  var modConn = null, modCode = null, modLog = [], modState = null;
 
   document.getElementById("md-join").addEventListener("click", function () {
     var code = document.getElementById("md-code").value.trim().toUpperCase();
@@ -123,8 +123,39 @@
     if (modConn) modConn.close();
     modCode = code;
     modLog = [];
+    modState = null;
     modConn = RoscoUI.connectGame(code, "admin", { onState: renderMod, onError: function (e) { alert(e); } });
   });
+
+  // Atajos de teclado del moderador: 1/2/3 juzgan, 4 pausa.
+  document.addEventListener("keydown", function (e) {
+    if (!modConn || !modState) return;
+    var tag = (e.target && e.target.tagName) || "";
+    if (/^(INPUT|TEXTAREA|SELECT|BUTTON)$/.test(tag)) return;
+    if (document.getElementById("tab-moderacion").hidden) return;
+    if (modState.status !== "playing") return;
+    var ap = modState.players[modState.activePlayer];
+    if (e.key === "1" && ap.current) doJudge("correct");
+    else if (e.key === "2" && ap.current) doJudge("wrong");
+    else if (e.key === "3" && ap.current) doJudge("pass");
+    else if (e.key === "4") doPause();
+  });
+
+  function doJudge(res) {
+    if (!modConn || !modState) return;
+    var ap = modState.players[modState.activePlayer];
+    if (!ap.current) return;
+    var names = { correct: "Correcto", wrong: "Incorrecto", pass: "Pasapalabra" };
+    logEvent("<b>" + E(ap.name) + "</b> · letra " + E(ap.current.letter) +
+      " → <b>" + names[res] + "</b>");
+    modConn.send({ type: "judge", result: res });
+  }
+
+  function doPause() {
+    if (!modConn || !modState || modState.status !== "playing") return;
+    logEvent("Pausa excepcional.");
+    modConn.send({ type: "pause" });
+  }
 
   function logEvent(html) {
     var d = new Date();
@@ -150,6 +181,7 @@
   }
 
   function renderMod(st) {
+    modState = st;
     var box = document.getElementById("md-body");
     var ap = st.players[st.activePlayer];
 
@@ -194,10 +226,12 @@
     h += playerCard(st.players[0], st.status !== "finished" && st.activePlayer === 0);
     h += playerCard(st.players[1], st.status !== "finished" && st.activePlayer === 1);
     if (st.status === "playing" && ap.current) {
-      h += "<button class='btn-big ok' data-j='correct'><span>Correcto</span><span class='ico'>✓</span></button>" +
-        "<button class='btn-big err' data-j='wrong'><span>Incorrecto</span><span class='ico'>✕</span></button>" +
-        "<button class='btn-big warn' data-j='pass'><span>Pasapalabra</span><span class='ico'>↷</span></button>" +
-        "<button class='btn-big ghost' id='md-pause'><span>Pausa excepcional</span></button>";
+      h += "<button class='btn-big ok' data-j='correct'><span class='btn-label'><kbd class='key'>1</kbd>Correcto</span><span class='ico'>✓</span></button>" +
+        "<button class='btn-big err' data-j='wrong'><span class='btn-label'><kbd class='key'>2</kbd>Incorrecto</span><span class='ico'>✕</span></button>" +
+        "<button class='btn-big warn' data-j='pass'><span class='btn-label'><kbd class='key'>3</kbd>Pasapalabra</span><span class='ico'>↷</span></button>" +
+        "<button class='btn-big ghost' id='md-pause'><span class='btn-label'><kbd class='key'>4</kbd>Pausa excepcional</span></button>" +
+        "<p class='muted' style='font-size:13px;margin-top:2px'>Atajos de teclado: " +
+        "<kbd class='key sm'>1</kbd> <kbd class='key sm'>2</kbd> <kbd class='key sm'>3</kbd> <kbd class='key sm'>4</kbd></p>";
     }
     h += "<div class='activity'><h4>Actividad reciente</h4><div id='md-log'>" +
       (modLog.join("") || "<div>Sin actividad todavía.</div>") + "</div></div>";
@@ -216,13 +250,7 @@
     });
 
     box.querySelectorAll("[data-j]").forEach(function (b) {
-      b.addEventListener("click", function () {
-        var res = b.dataset.j;
-        var names = { correct: "Correcto", wrong: "Incorrecto", pass: "Pasapalabra" };
-        logEvent("<b>" + E(ap.name) + "</b> · letra " + E(ap.current ? ap.current.letter : "?") +
-          " → <b>" + names[res] + "</b>");
-        modConn.send({ type: "judge", result: res });
-      });
+      b.addEventListener("click", function () { doJudge(b.dataset.j); });
     });
     var btnStart = document.getElementById("md-start");
     if (btnStart) btnStart.addEventListener("click", function () {
@@ -235,12 +263,7 @@
       modConn.send({ type: "resume" });
     });
     var btnPause = document.getElementById("md-pause");
-    if (btnPause) btnPause.addEventListener("click", function () {
-      if (confirm("¿Pausar la partida?")) {
-        logEvent("Pausa excepcional.");
-        modConn.send({ type: "pause" });
-      }
-    });
+    if (btnPause) btnPause.addEventListener("click", doPause);
   }
 
   /* ---------------- temáticas ---------------- */

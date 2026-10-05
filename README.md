@@ -71,7 +71,7 @@ Variables de entorno:
 |---|---|---|
 | `PORT` | `3000` | Puerto HTTP/WebSocket |
 | `DATA_DIR` | `./data` | Carpeta del SQLite (`rosco.db`) |
-| `PUBLIC_BASE_URL` | *(auto)* | Base pública para links y QR, ej. `http://192.168.1.50:3000`. **Necesaria en Docker**: dentro del contenedor solo se ve la IP interna (172.x), no la LAN del host. |
+| `PUBLIC_BASE_URL` | *(auto)* | Base pública para links y QR, ej. `http://192.168.1.50:3000`. Solo necesaria como override manual: por defecto se usa el **Host del request** (si abrís el admin con la IP de la LAN, los QR salen con esa IP) y como respaldo la mejor IP LAN autodetectada (se ignoran interfaces virtuales/docker/vpn y link-local). |
 
 En `docker-compose.yml` podés fijarla así:
 

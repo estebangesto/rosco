@@ -7,7 +7,7 @@ import {
   DefinitionInput,
 } from "./db";
 import { GameRoom, makeCode, LETTERS } from "./game";
-import { baseUrl } from "./net";
+import { requestBaseUrl } from "./net";
 
 export interface ApiContext {
   db: Database.Database;
@@ -17,8 +17,7 @@ export interface ApiContext {
 
 const CONTAIN_OK = new Set(["J", "Ñ", "Q", "Y", "Z"]);
 
-function gameLinks(code: string) {
-  const base = baseUrl();
+function gameLinks(code: string, base: string) {
   return {
     admin: `${base}/admin#juego=${code}`,
     jugador1: `${base}/juego/${code}/jugador1`,
@@ -27,8 +26,8 @@ function gameLinks(code: string) {
   };
 }
 
-async function withQr(code: string) {
-  const links = gameLinks(code);
+async function withQr(code: string, base: string) {
+  const links = gameLinks(code, base);
   const qr: Record<string, string> = {};
   for (const [k, v] of Object.entries(links)) {
     qr[k] = await QRCode.toDataURL(v, { width: 240, margin: 1 });
@@ -48,7 +47,7 @@ export function buildRouter(ctx: ApiContext): Router {
 
   /* ------------------------------ salud --------------------------- */
   r.get("/health", (_req, res) => res.json({ ok: true }));
-  r.get("/info", (_req, res) => res.json({ baseUrl: baseUrl() }));
+  r.get("/info", (req, res) => res.json({ baseUrl: requestBaseUrl(req.get("host"), req.protocol) }));
 
   /* ----------------------------- temáticas ------------------------ */
   r.get("/themes", (_req, res) => res.json(listThemes(db)));
@@ -165,7 +164,7 @@ export function buildRouter(ctx: ApiContext): Router {
       room.onChange = () => broadcast(code);
       room.deal(db); // sortea las definiciones (incrementa usos)
       rooms.set(code, room);
-      res.status(201).json(await withQr(code));
+      res.status(201).json(await withQr(code, requestBaseUrl(req.get("host"), req.protocol)));
     } catch (e) {
       res.status(400).json({ error: (e as Error).message });
     }
@@ -177,7 +176,7 @@ export function buildRouter(ctx: ApiContext): Router {
       const row = db.prepare(
         "SELECT g.code, g.status, t.name AS theme, g.config FROM games g JOIN themes t ON t.id = g.theme_id WHERE g.code = ?"
       ).get(room.code) as { code: string; status: string; theme: string; config: string } | undefined;
-      res.json({ ...(await withQr(room.code)), theme: row?.theme, config: row ? JSON.parse(row.config) : null });
+      res.json({ ...(await withQr(room.code, requestBaseUrl(req.get("host"), req.protocol))), theme: row?.theme, config: row ? JSON.parse(row.config) : null });
     } catch (e) {
       res.status((e as { status?: number }).status ?? 500).json({ error: (e as Error).message });
     }
