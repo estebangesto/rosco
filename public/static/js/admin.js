@@ -2,7 +2,7 @@
 (function () {
   "use strict";
   var E = RoscoUI.esc;
-  var LETTERS = "ABCDEFGHIJLMNÑOPQRSTUVXYZ".split("");
+  var LETTERS = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ".split("");
 
   function api(path, opts) {
     opts = opts || {};

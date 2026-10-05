@@ -1,115 +1,139 @@
 # El Rosco — versión servidor (Docker)
 
-Juego El Rosco estilo Pasapalabra para dos jugadores, con vistas sincronizadas en tiempo real:
-moderador, dos jugadores y vista pública.
+El Rosco estilo Pasapalabra para dos jugadores, con las cuatro vistas
+sincronizadas en tiempo real: moderación, jugador 1, jugador 2 y vista para
+el público. Se distribuye como imagen Docker lista para usar.
 
-## Quickstart
+## Puesta en marcha
 
 ```bash
 docker compose up --build -d
 ```
 
-Abrí en el navegador:
+Abrí `http://localhost:3000/admin` en el navegador. En la pestaña
+**Partida** creás la sesión: cargás los nombres, el tiempo por jugador y la
+temática, y obtenés los links y códigos QR para que cada jugador abra su
+vista en su propio dispositivo.
 
-- **Administración / moderación:** http://localhost:3000/admin
-- Los QR que genera el servidor apuntan a la **IP de red local** del equipo
-  (ej. `http://192.168.1.50:3000`), para que cada jugador abra su vista en su
-  propio dispositivo escaneando el QR.
+## Vistas
 
-Al crear una partida desde **Partida** se muestran los QR y links de:
-jugador 1, jugador 2 y vista pública.
-
-## Cómo funciona cada vista
-
-| Vista | URL | Qué muestra |
+| Vista | URL | Contenido |
 |---|---|---|
-| Admin | `/admin` | Configuración, temáticas, palabras y **moderación**: inicia la partida, ve la respuesta sin ocultar y juzga Correcto / Error / Pasapalabra. |
+| Administración | `/admin` | Pestañas Partida, Moderación, Temáticas y Palabras. |
 | Jugador 1 | `/juego/:codigo/jugador1` | Su rosco, su tiempo y su pregunta (sin la respuesta). Si no es su turno, lo indica. |
 | Jugador 2 | `/juego/:codigo/jugador2` | Igual que jugador 1. |
 | Pública | `/juego/:codigo/publico` | El jugador activo en grande (rosco, tiempo, pregunta) y al costado el rosco del otro jugador con su próxima letra y tiempo restante. |
 
-El servidor es la fuente de verdad: el estado de la partida y el
-**temporizador corren en el servidor** (se evita el drift de la versión
-estática cuando la pestaña pierde el foco). Las vistas se sincronizan por
-WebSocket en salas identificadas por el código de partida.
+El servidor concentra el estado de la partida y el temporizador; las vistas
+se sincronizan por WebSocket en salas identificadas por el código de la
+partida.
 
-## Reglas implementadas
+## Dirección del servidor (links y QR)
 
-- Rosco de 25 letras (sin K ni W, con Ñ).
-- Pistas "contiene" solo para J, Ñ, Q, Y, Z; "empieza con" para el resto.
-- Por turnos: errar o pasar cede el turno; la reanudación la confirma el
-  moderador o el jugador en turno.
-- Si un jugador termina o se queda sin tiempo, el otro sigue solo; en ese
-  caso errar o pasar lo deja en espera (pausa), listo para continuar, y el
-  reloj no sigue corriendo.
-- Colores: verde acierto, rojo error, amarillo pasapalabra, azul actual.
-- Desempate: más aciertos → menos errores → más tiempo restante.
-- Al terminar, las cuatro vistas muestran la pantalla final: ganador con
-  festejo, estadísticas, ambos roscos y el detalle de definiciones de cada
-  jugador indicando si fue bien contestada o no.
-- Atajos del moderador: `1` correcto, `2` incorrecto, `3` pasapalabra,
-  `4` pausa o reanuda el turno según el estado.
-- Las definiciones no se repiten para el mismo jugador ni entre jugadores
-  en la misma partida; se priorizan las de menor contador de usos.
-- Las letras con menos de 2 definiciones activas no entran en juego.
+Los links y QR tienen que apuntar a una dirección alcanzable desde los
+demás dispositivos de la red. Se resuelve en este orden:
 
-## Temáticas y palabras (pestañas del admin)
+1. La dirección guardada en la partida (tiene prioridad).
+2. La variable `PUBLIC_BASE_URL`, como ajuste manual.
+3. El Host con el que se abrió el admin (si abrís el admin con la IP de la
+   LAN, los QR salen con esa IP).
+4. La mejor IP LAN autodetectada.
 
-- **Temáticas:** crear, renombrar y eliminar. Cada una tiene su base de
-  definiciones separada. La temática **Familiar** viene precargada con el
-  banco original (293 definiciones).
-- **Palabras:** editor por letra (palabra, definición, tipo de pista,
-  alternativas, activa, contador de usos editable). Habilitar/deshabilitar
-  letras sin borrar sus definiciones. Los cambios quedan en borrador hasta
-  **Guardar todo el listado**; **Restablecer** los descarta.
+En la pantalla **Partida** hay un campo opcional para cargarla antes de
+crear la partida, y en **Accesos** un campo con botón **Aplicar** para
+cambiarla después y regenerar los links y QR.
 
-## Desarrollo local (sin Docker)
+## Moderación
 
-```bash
-npm install
-npm run build
-npm start
-# o: npx tsc --watch  +  node dist/index.js
-```
+Desde la pestaña **Moderación** el moderador inicia la partida, ve la
+respuesta de cada letra sin ocultar y juzga con los botones Correcto,
+Incorrecto y Pasapalabra. También dispone de pausa excepcional.
 
-Variables de entorno:
+Atajos de teclado:
 
-| Variable | Default | Descripción |
+| Tecla | Acción |
+|---|---|
+| `1` | Correcto |
+| `2` | Incorrecto |
+| `3` | Pasapalabra |
+| `4` | Pausa durante el juego; reanuda el turno cuando está en pausa |
+
+Errar o pasar cede el turno al otro jugador con una pausa intermedia; la
+reanudan el moderador o el jugador en turno. Si queda un solo jugador
+activo, errar o pasar lo deja en espera (pausa), listo para continuar, y el
+reloj se detiene.
+
+Al terminar, las cuatro vistas muestran la pantalla final: quién ganó,
+estadísticas de cada jugador, ambos roscos y el detalle de definiciones
+con el resultado de cada letra.
+
+## Reglas del juego
+
+- Rosco de 27 letras (abecedario completo con Ñ).
+- Pistas "contiene la letra" para J, Ñ, Q, Y y Z; "empieza con" para el resto.
+- Colores: verde acierto, rojo error, amarillo pasapalabra, azul letra actual.
+- Desempate: más aciertos, luego menos errores, luego más tiempo restante.
+- Las definiciones no se repiten para el mismo jugador ni entre jugadores en
+  la misma partida; se priorizan las menos usadas.
+
+## Temáticas, palabras y letras
+
+Cada **temática** tiene su propia base de definiciones. La temática
+**Familiar** viene precargada con 293 definiciones. Las nuevas temáticas se
+crean vacías.
+
+En la pestaña **Palabras** se gestionan las definiciones por letra:
+palabra, definición, tipo de pista, alternativas aceptadas, estado activa y
+contador de usos. También se puede habilitar o deshabilitar cada letra sin
+borrar sus definiciones; una letra con menos de 2 definiciones activas no
+entra en juego. Las letras K y W están disponibles en el abecedario: traen
+sus casillas para cargarles palabras cuando se las quiera incluir.
+
+Los cambios quedan en borrador hasta **Guardar todo el listado**;
+**Restablecer** los descarta y recarga desde el servidor.
+
+## API
+
+REST (base `/api`):
+
+- Estado: `GET /health`, `GET /info`
+- Temáticas: `GET /POST /themes`, `PUT /DELETE /themes/:id`
+- Definiciones: `GET /themes/:id/definitions`, `PUT /themes/:id/bank`
+- Letras: `GET /themes/:id/letters`, `PUT /themes/:id/letters/:letter`
+- Partidas: `GET /POST /games`, `GET /games/:code`,
+  `POST /games/:code/start|judge|resume`
+- Dirección por partida: `PUT /games/:code/base-url` con
+  `{ "baseUrl": "http://192.168.1.20:3000" }`
+
+Las acciones del juego en vivo también están disponibles por WebSocket en
+`/ws` (`join`, `start`, `judge`, `pause`, `resume`).
+
+## Configuración
+
+| Variable | Por defecto | Uso |
 |---|---|---|
-| `PORT` | `3000` | Puerto HTTP/WebSocket |
+| `PORT` | `3000` | Puerto HTTP y WebSocket |
 | `DATA_DIR` | `./data` | Carpeta del SQLite (`rosco.db`) |
-| `PUBLIC_BASE_URL` | *(auto)* | Base pública para links y QR, ej. `http://192.168.1.50:3000`. Solo necesaria como override manual: por defecto se usa el **Host del request** (si abrís el admin con la IP de la LAN, los QR salen con esa IP) y como respaldo la mejor IP LAN autodetectada (se ignoran interfaces virtuales/docker/vpn y link-local). |
+| `PUBLIC_BASE_URL` | *(auto)* | Dirección pública para links y QR, ej. `http://192.168.1.50:3000` |
 
-En `docker-compose.yml` podés fijarla así:
+Ejemplo en `docker-compose.yml`:
 
 ```yaml
 environment:
   - PUBLIC_BASE_URL=http://192.168.1.50:3000
 ```
 
-## API REST (resumen)
+Desarrollo local sin Docker:
 
-- `GET /api/health`, `GET /api/info`
-- Temáticas: `GET/POST /api/themes`, `PUT/DELETE /api/themes/:id`
-- Definiciones: `GET /api/themes/:id/definitions`, `PUT /api/themes/:id/bank`
-- Letras: `GET /api/themes/:id/letters`, `PUT /api/themes/:id/letters/:letter`
-- Partidas: `GET/POST /api/games`, `GET /api/games/:code`,
-  `POST /api/games/:code/start|judge|resume`
-- Dirección del servidor por partida: `PUT /api/games/:code/base-url`
-  con `{ "baseUrl": "http://192.168.1.20:3000" }`; regenera links y QR
-  con la nueva dirección. También se puede fijar al crear la partida
-  (`POST /api/games` acepta `baseUrl`) o desde la pantalla Partida del
-  admin (campo + botón Aplicar). La dirección guardada tiene prioridad
-  sobre `PUBLIC_BASE_URL` y el Host del request.
+```bash
+npm install
+npm run build
+npm start
+```
 
-El juego en vivo también expone las mismas acciones por WebSocket
-(`join`, `judge`, `resume`, `start`) en `/ws`.
+## Persistencia
 
-## Notas y limitaciones
-
-- Pensado para red local (juego familiar / aula). No hay autenticación:
-  el código de partida es lo único que identifica la sala.
-- El estado vivo de las partidas está en memoria: si el servidor se
-  reinicia, las partidas en curso se pierden (el registro queda en la base).
-- La base SQLite vive en el volumen `rosco-data`; las temáticas y ediciones
-  persisten entre reinicios.
+Las temáticas, palabras, letras y partidas registradas se guardan en SQLite
+(en Docker, en el volumen `rosco-data`) y sobreviven a los reinicios. El
+estado vivo de una partida en curso está en memoria: si el servidor se
+reinicia, esa partida se pierde.

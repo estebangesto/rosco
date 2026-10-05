@@ -8,7 +8,7 @@ import { bumpUses } from "./db";
 /* estática (donde el timer se degradaba si la pestaña perdía foco).   */
 /* ------------------------------------------------------------------ */
 
-export const LETTERS = "ABCDEFGHIJLMNÑOPQRSTUVXYZ".split(""); // 25, sin K ni W, con Ñ
+export const LETTERS = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ".split(""); // 27: abecedario completo con Ñ
 
 export type LetterStatus = "pending" | "current" | "correct" | "wrong" | "passed";
 export type GameStatus = "lobby" | "playing" | "paused" | "finished";
