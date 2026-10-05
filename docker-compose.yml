@@ -1,0 +1,16 @@
+services:
+  rosco:
+    build: .
+    image: rosco-server:latest
+    container_name: rosco-server
+    ports:
+      - "3000:3000"
+    volumes:
+      - rosco-data:/data
+    environment:
+      - PORT=3000
+      - DATA_DIR=/data
+    restart: unless-stopped
+
+volumes:
+  rosco-data:

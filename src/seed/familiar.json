@@ -1,0 +1,1536 @@
+{
+ "A": [
+  {
+   "t": "E",
+   "q": "Ave que vuela muy alto y caza otros animales con sus garras.",
+   "a": "águila"
+  },
+  {
+   "t": "E",
+   "q": "Golosina argentina de dos tapas unidas con dulce de leche.",
+   "a": "alfajor"
+  },
+  {
+   "t": "E",
+   "q": "Lo que tira el barco al agua para quedarse quieto en un lugar.",
+   "a": "ancla"
+  },
+  {
+   "t": "E",
+   "q": "Carne a la parrilla que se comparte en familia o con amigos.",
+   "a": "asado"
+  },
+  {
+   "t": "E",
+   "q": "Apoyás la cabeza en esto para dormir.",
+   "a": "almohada"
+  },
+  {
+   "t": "E",
+   "q": "Se usan sobre la nariz para ver mejor.",
+   "a": "anteojos"
+  },
+  {
+   "t": "E",
+   "q": "Negocio del barrio donde se compra de todo un poco.",
+   "a": "almacén"
+  },
+  {
+   "t": "E",
+   "q": "Aparece en el cielo con muchos colores después de la lluvia.",
+   "a": "arcoíris"
+  },
+  {
+   "t": "E",
+   "q": "Juego de tablero con rey, reina, torres y caballos.",
+   "a": "ajedrez"
+  },
+  {
+   "t": "E",
+   "q": "Momento del día en que el sol se esconde.",
+   "a": "atardecer"
+  },
+  {
+   "t": "E",
+   "q": "Aro de metal que se usa en un dedo de la mano.",
+   "a": "anillo"
+  },
+  {
+   "t": "E",
+   "q": "Persona que viaja al espacio en una nave.",
+   "a": "astronauta"
+  }
+ ],
+ "B": [
+  {
+   "t": "E",
+   "q": "Dulce redondo de chocolate que se derrite en la boca.",
+   "a": "bombón"
+  },
+  {
+   "t": "E",
+   "q": "La de Argentina es celeste y blanca, con un sol en el medio.",
+   "a": "bandera"
+  },
+  {
+   "t": "E",
+   "q": "Juguete de papel que vuela con el viento, atado a un hilo.",
+   "a": "barrilete"
+  },
+  {
+   "t": "E",
+   "q": "Instrumento con una aguja que siempre señala el norte.",
+   "a": "brújula"
+  },
+  {
+   "t": "E",
+   "q": "Prenda de lana que se usa alrededor del cuello cuando hace frío.",
+   "a": "bufanda"
+  },
+  {
+   "t": "E",
+   "q": "Persona que apaga incendios y rescata gente.",
+   "a": "bombero"
+  },
+  {
+   "t": "E",
+   "q": "Envase de vidrio o plástico donde viene la gaseosa.",
+   "a": "botella"
+  },
+  {
+   "t": "E",
+   "q": "El animal más grande que vive en el mar.",
+   "a": "ballena"
+  },
+  {
+   "t": "E",
+   "q": "Lugar con muchísimos árboles juntos.",
+   "a": "bosque"
+  },
+  {
+   "t": "E",
+   "q": "Vehículo de dos ruedas que avanza pedaleando.",
+   "a": "bicicleta"
+  },
+  {
+   "t": "E",
+   "q": "Caja donde se dejan las cartas para que las lleve el correo.",
+   "a": "buzón"
+  },
+  {
+   "t": "E",
+   "q": "Ahí se guardan la plata y los documentos.",
+   "a": "billetera"
+  }
+ ],
+ "C": [
+  {
+   "t": "E",
+   "q": "Local donde se pasan películas en una pantalla enorme.",
+   "a": "cine"
+  },
+  {
+   "t": "E",
+   "q": "Lugar donde duerme el perro.",
+   "a": "cucha"
+  },
+  {
+   "t": "E",
+   "q": "Transporte público que recorre la ciudad llevando pasajeros.",
+   "a": "colectivo"
+  },
+  {
+   "t": "E",
+   "q": "Abrigo con cierre que se usa cuando hace frío.",
+   "a": "campera"
+  },
+  {
+   "t": "E",
+   "q": "Lugar donde se juega al fútbol, con dos arcos.",
+   "a": "cancha"
+  },
+  {
+   "t": "E",
+   "q": "Fruta roja y chiquita, con un carozo adentro.",
+   "a": "cereza"
+  },
+  {
+   "t": "E",
+   "q": "Se pasa por la cintura para que no se caiga el pantalón.",
+   "a": "cinturón"
+  },
+  {
+   "t": "E",
+   "q": "Cuerpo brillante con una cola larga que se ve en el cielo de noche.",
+   "a": "cometa"
+  },
+  {
+   "t": "E",
+   "q": "Donde los chicos guardan las hojas y los trabajos de la escuela.",
+   "a": "carpeta"
+  },
+  {
+   "t": "E",
+   "q": "Reptil grande, de dientes filosos, que vive en los ríos.",
+   "a": "cocodrilo"
+  },
+  {
+   "t": "E",
+   "q": "Camita especial para los bebés.",
+   "a": "cuna"
+  },
+  {
+   "t": "E",
+   "q": "Espectáculo con payasos, malabaristas y equilibristas.",
+   "a": "circo"
+  }
+ ],
+ "D": [
+  {
+   "t": "E",
+   "q": "Perro blanco y grande, de raza argentina.",
+   "a": "dogo",
+   "alt": [
+    "dogo argentino"
+   ]
+  },
+  {
+   "t": "E",
+   "q": "Color brillante parecido al del oro.",
+   "a": "dorado"
+  },
+  {
+   "t": "E",
+   "q": "Animal gigante que vivió hace millones de años.",
+   "a": "dinosaurio"
+  },
+  {
+   "t": "E",
+   "q": "Dulce argentino, bien cremoso, que se unta en las tostadas.",
+   "a": "dulce de leche"
+  },
+  {
+   "t": "E",
+   "q": "Médico que arregla los dientes.",
+   "a": "dentista"
+  },
+  {
+   "t": "E",
+   "q": "Lugar muy seco y lleno de arena, donde casi no llueve.",
+   "a": "desierto"
+  },
+  {
+   "t": "E",
+   "q": "Piedra preciosa muy brillante y dura.",
+   "a": "diamante"
+  },
+  {
+   "t": "E",
+   "q": "Papel que te entregan cuando terminás un curso.",
+   "a": "diploma"
+  },
+  {
+   "t": "E",
+   "q": "Animal de cuento que echa fuego por la boca.",
+   "a": "dragón"
+  },
+  {
+   "t": "E",
+   "q": "Persona que investiga misterios y busca pistas.",
+   "a": "detective"
+  },
+  {
+   "t": "E",
+   "q": "El último mes del año.",
+   "a": "diciembre"
+  },
+  {
+   "t": "E",
+   "q": "Lugar donde te bañás bajo el agua que cae.",
+   "a": "ducha"
+  }
+ ],
+ "E": [
+  {
+   "t": "E",
+   "q": "Campo grande con una casa antigua.",
+   "a": "estancia"
+  },
+  {
+   "t": "E",
+   "q": "Comida argentina: masa rellena que se hornea o se fríe.",
+   "a": "empanada"
+  },
+  {
+   "t": "E",
+   "q": "Sirve para subir de un piso a otro.",
+   "a": "escalera"
+  },
+  {
+   "t": "E",
+   "q": "Punto brillante que se ve en el cielo de noche.",
+   "a": "estrella"
+  },
+  {
+   "t": "E",
+   "q": "Ahí te mirás y ves tu cara reflejada.",
+   "a": "espejo"
+  },
+  {
+   "t": "E",
+   "q": "El conjunto de todos los huesos del cuerpo.",
+   "a": "esqueleto"
+  },
+  {
+   "t": "E",
+   "q": "Mesa para estudiar y hacer la tarea.",
+   "a": "escritorio"
+  },
+  {
+   "t": "E",
+   "q": "Órgano del cuerpo donde va a parar la comida.",
+   "a": "estómago"
+  },
+  {
+   "t": "E",
+   "q": "Cuando la Luna tapa al Sol por un rato.",
+   "a": "eclipse"
+  },
+  {
+   "t": "E",
+   "q": "Personaje chiquito de los cuentos que suele vivir en el bosque.",
+   "a": "enano"
+  },
+  {
+   "t": "E",
+   "q": "Animal enorme, con trompa larga y colmillos.",
+   "a": "elefante"
+  },
+  {
+   "t": "E",
+   "q": "Se usa para barrer el piso.",
+   "a": "escoba"
+  }
+ ],
+ "F": [
+  {
+   "t": "E",
+   "q": "Instrumento de madera que suena cuando soplás por un costado.",
+   "a": "flauta"
+  },
+  {
+   "t": "E",
+   "q": "Animal marino con bigotes que aplaude con las aletas.",
+   "a": "foca"
+  },
+  {
+   "t": "E",
+   "q": "Torre con una luz muy fuerte que guía a los barcos.",
+   "a": "faro"
+  },
+  {
+   "t": "E",
+   "q": "Personaje de cuento que asusta y atraviesa las paredes.",
+   "a": "fantasma"
+  },
+  {
+   "t": "E",
+   "q": "Pasta larga y finita que se come con salsa.",
+   "a": "fideo"
+  },
+  {
+   "t": "E",
+   "q": "Camino de vías por donde anda el tren.",
+   "a": "ferrocarril"
+  },
+  {
+   "t": "E",
+   "q": "Fruta roja con semillitas, que se come con crema.",
+   "a": "frutilla"
+  },
+  {
+   "t": "E",
+   "q": "Palito que se frota contra la caja para encender fuego.",
+   "a": "fósforo"
+  },
+  {
+   "t": "E",
+   "q": "Lugar donde se producen cosas con máquinas.",
+   "a": "fábrica"
+  },
+  {
+   "t": "E",
+   "q": "La dispara el arco; también sirve para señalar una dirección.",
+   "a": "flecha"
+  },
+  {
+   "t": "E",
+   "q": "Lugar de la plaza donde el agua sale para arriba.",
+   "a": "fuente"
+  },
+  {
+   "t": "E",
+   "q": "Envase de vidrio con tapa donde se guarda la mermelada.",
+   "a": "frasco"
+  }
+ ],
+ "G": [
+  {
+   "t": "E",
+   "q": "Jinete argentino que usa bombacha, boina y poncho.",
+   "a": "gaucho"
+  },
+  {
+   "t": "E",
+   "q": "Instrumento de seis cuerdas que se toca con los dedos.",
+   "a": "guitarra"
+  },
+  {
+   "t": "E",
+   "q": "Golosina crocante que se moja en la leche o el café.",
+   "a": "galletita"
+  },
+  {
+   "t": "E",
+   "q": "Animal parecido a la llama que vive en la Patagonia.",
+   "a": "guanaco"
+  },
+  {
+   "t": "E",
+   "q": "Río de hielo enorme, como el Perito Moreno.",
+   "a": "glaciar"
+  },
+  {
+   "t": "E",
+   "q": "Se infla con aire y decora las fiestas de cumpleaños.",
+   "a": "globo"
+  },
+  {
+   "t": "E",
+   "q": "Lugar del campo donde se crían animales.",
+   "a": "granja"
+  },
+  {
+   "t": "E",
+   "q": "Mono grande y muy fuerte que vive en la selva.",
+   "a": "gorila"
+  },
+  {
+   "t": "E",
+   "q": "Hermanos que nacieron el mismo día y se parecen mucho.",
+   "a": "gemelos"
+  },
+  {
+   "t": "E",
+   "q": "Máquina alta que levanta cosas pesadas en las obras.",
+   "a": "grúa"
+  },
+  {
+   "t": "E",
+   "q": "Sirve para borrar lo que escribiste con lápiz.",
+   "a": "goma",
+   "alt": [
+    "goma de borrar"
+   ]
+  },
+  {
+   "t": "E",
+   "q": "Lugar donde duermen las gallinas.",
+   "a": "gallinero"
+  }
+ ],
+ "H": [
+  {
+   "t": "E",
+   "q": "Caja caliente de la cocina donde se hornea el pan.",
+   "a": "horno"
+  },
+  {
+   "t": "E",
+   "q": "Agua congelada, bien fría y dura.",
+   "a": "hielo"
+  },
+  {
+   "t": "E",
+   "q": "Insecto chiquito que trabaja en fila y carga hojas.",
+   "a": "hormiga"
+  },
+  {
+   "t": "E",
+   "q": "Lugar donde atienden a las personas enfermas.",
+   "a": "hospital"
+  },
+  {
+   "t": "E",
+   "q": "Electrodoméstico donde se guarda la comida para que no se eche a perder.",
+   "a": "heladera"
+  },
+  {
+   "t": "E",
+   "q": "Aeronave que vuela con una hélice grande arriba.",
+   "a": "helicóptero"
+  },
+  {
+   "t": "E",
+   "q": "Personaje valiente que salva a los demás.",
+   "a": "héroe"
+  },
+  {
+   "t": "E",
+   "q": "Asiento colgante de la plaza que se balancea.",
+   "a": "hamaca"
+  },
+  {
+   "t": "E",
+   "q": "Polvo blanco con el que se hace el pan.",
+   "a": "harina"
+  },
+  {
+   "t": "E",
+   "q": "Lugar donde se plantan verduras.",
+   "a": "huerta"
+  },
+  {
+   "t": "E",
+   "q": "Persona que alienta con pasión a su equipo de fútbol.",
+   "a": "hincha"
+  },
+  {
+   "t": "E",
+   "q": "Personaje mágico de los cuentos, con varita y alas.",
+   "a": "hada"
+  }
+ ],
+ "I": [
+  {
+   "t": "E",
+   "q": "Tierra rodeada de agua por todos lados.",
+   "a": "isla"
+  },
+  {
+   "t": "E",
+   "q": "Objeto de metal que atrae los clavos.",
+   "a": "imán"
+  },
+  {
+   "t": "E",
+   "q": "Casita hecha con bloques de hielo.",
+   "a": "iglú"
+  },
+  {
+   "t": "E",
+   "q": "Fuego grande que quema todo lo que toca.",
+   "a": "incendio"
+  },
+  {
+   "t": "E",
+   "q": "Estación del año en la que hace mucho frío.",
+   "a": "invierno"
+  },
+  {
+   "t": "E",
+   "q": "Lengua que habla la gente de un país, como el español.",
+   "a": "idioma"
+  },
+  {
+   "t": "E",
+   "q": "Animalito de seis patas, como la hormiga o la mariposa.",
+   "a": "insecto"
+  },
+  {
+   "t": "E",
+   "q": "Persona a la que invitan a una fiesta.",
+   "a": "invitado"
+  },
+  {
+   "t": "E",
+   "q": "Montaña de hielo que flota en el mar.",
+   "a": "iceberg"
+  },
+  {
+   "t": "E",
+   "q": "Máquina que pasa a papel lo que hay en la computadora.",
+   "a": "impresora"
+  },
+  {
+   "t": "E",
+   "q": "Lugar adonde la gente va a rezar.",
+   "a": "iglesia"
+  },
+  {
+   "t": "E",
+   "q": "Objeto que produce música, como el piano o la trompeta.",
+   "a": "instrumento"
+  }
+ ],
+ "J": [
+  {
+   "t": "E",
+   "q": "Patio con plantas y flores.",
+   "a": "jardín"
+  },
+  {
+   "t": "E",
+   "q": "Animal africano de cuello muy largo.",
+   "a": "jirafa"
+  },
+  {
+   "t": "E",
+   "q": "Objeto con el que juegan los chicos.",
+   "a": "juguete"
+  },
+  {
+   "t": "E",
+   "q": "Se usa para lavarse y hace mucha espuma.",
+   "a": "jabón"
+  },
+  {
+   "t": "E",
+   "q": "Caja con barrotes donde se guarda a un pájaro.",
+   "a": "jaula"
+  },
+  {
+   "t": "E",
+   "q": "Persona que manda en un trabajo.",
+   "a": "jefe"
+  },
+  {
+   "t": "E",
+   "q": "Día de la semana que viene después del miércoles.",
+   "a": "jueves"
+  },
+  {
+   "t": "E",
+   "q": "Fiambre rosado que se pone en el sándwich.",
+   "a": "jamón"
+  },
+  {
+   "t": "E",
+   "q": "Objeto valioso que se usa de adorno, como un collar de oro.",
+   "a": "joya"
+  },
+  {
+   "t": "C",
+   "q": "Órgano del cuerpo con el que vemos.",
+   "a": "ojo"
+  },
+  {
+   "t": "C",
+   "q": "Insecto que pica y produce miel en el panal.",
+   "a": "abeja"
+  },
+  {
+   "t": "C",
+   "q": "Animal de orejas largas que come zanahorias.",
+   "a": "conejo"
+  }
+ ],
+ "L": [
+  {
+   "t": "E",
+   "q": "Animal que ruge y al que llaman el rey de la selva.",
+   "a": "león"
+  },
+  {
+   "t": "E",
+   "q": "Aparato que da luz y se lleva en la mano.",
+   "a": "linterna"
+  },
+  {
+   "t": "E",
+   "q": "Pájaro colorido que puede aprender a repetir palabras.",
+   "a": "loro"
+  },
+  {
+   "t": "E",
+   "q": "Animal parecido a un perro salvaje que aúlla a la luna.",
+   "a": "lobo"
+  },
+  {
+   "t": "E",
+   "q": "Reptil chiquito que se esconde entre las piedras.",
+   "a": "lagartija"
+  },
+  {
+   "t": "E",
+   "q": "Máquina que lava la ropa con agua y jabón.",
+   "a": "lavarropas"
+  },
+  {
+   "t": "E",
+   "q": "Verdura de hojas verdes que se pone en la ensalada.",
+   "a": "lechuga"
+  },
+  {
+   "t": "E",
+   "q": "Legumbres chiquitas que se comen en guiso.",
+   "a": "lentejas"
+  },
+  {
+   "t": "E",
+   "q": "Bebida fresca hecha con limón, agua y azúcar.",
+   "a": "limonada"
+  },
+  {
+   "t": "E",
+   "q": "Negocio donde se venden libros y útiles escolares.",
+   "a": "librería"
+  },
+  {
+   "t": "E",
+   "q": "Ave de ojos grandes que caza de noche.",
+   "a": "lechuza"
+  },
+  {
+   "t": "E",
+   "q": "Brilla en el cielo de noche y va cambiando de forma.",
+   "a": "luna"
+  }
+ ],
+ "M": [
+  {
+   "t": "E",
+   "q": "Infusión argentina que se toma con bombilla.",
+   "a": "mate"
+  },
+  {
+   "t": "E",
+   "q": "Recipiente donde se plantan las flores del balcón.",
+   "a": "maceta"
+  },
+  {
+   "t": "E",
+   "q": "Factura argentina, dulce o salada, típica del desayuno.",
+   "a": "medialuna"
+  },
+  {
+   "t": "E",
+   "q": "Bolso que se lleva cargado en la espalda.",
+   "a": "mochila"
+  },
+  {
+   "t": "E",
+   "q": "Animal que vuela de noche y duerme boca abajo.",
+   "a": "murciélago"
+  },
+  {
+   "t": "E",
+   "q": "Dinero de metal, redondo y chiquito.",
+   "a": "moneda"
+  },
+  {
+   "t": "E",
+   "q": "Elevación muy alta del terreno.",
+   "a": "montaña"
+  },
+  {
+   "t": "E",
+   "q": "Aparato que hace que la voz se escuche más fuerte.",
+   "a": "micrófono"
+  },
+  {
+   "t": "E",
+   "q": "Se unta en el pan y se hace con la grasa de la leche.",
+   "a": "manteca"
+  },
+  {
+   "t": "E",
+   "q": "Lugar donde se exhiben cosas antiguas e interesantes.",
+   "a": "museo"
+  },
+  {
+   "t": "E",
+   "q": "Máquina que muele el trigo para hacer harina.",
+   "a": "molino"
+  },
+  {
+   "t": "E",
+   "q": "Muñeco que se mueve con hilos o con la mano.",
+   "a": "marioneta"
+  }
+ ],
+ "N": [
+  {
+   "t": "E",
+   "q": "Deporte que se practica nadando en la pileta.",
+   "a": "natación"
+  },
+  {
+   "t": "E",
+   "q": "Fiesta de fin de año en la que se arma el arbolito.",
+   "a": "navidad"
+  },
+  {
+   "t": "E",
+   "q": "Masa blanca del cielo de donde cae la lluvia.",
+   "a": "nube"
+  },
+  {
+   "t": "E",
+   "q": "Casita que arman los pájaros en las ramas.",
+   "a": "nido"
+  },
+  {
+   "t": "E",
+   "q": "Hijo de un hijo: la abuela lo mima un montón.",
+   "a": "nieto"
+  },
+  {
+   "t": "E",
+   "q": "Fruta redonda, de cáscara gruesa y gajos jugosos.",
+   "a": "naranja"
+  },
+  {
+   "t": "E",
+   "q": "Lo que se forma al atar los cordones de las zapatillas.",
+   "a": "nudo"
+  },
+  {
+   "t": "E",
+   "q": "Información nueva que cuentan en la tele o la radio.",
+   "a": "noticia"
+  },
+  {
+   "t": "E",
+   "q": "Forma cariñosa de llamar a un chico en Argentina.",
+   "a": "nene"
+  },
+  {
+   "t": "E",
+   "q": "Persona que nada muy bien y compite en la pileta.",
+   "a": "nadador"
+  },
+  {
+   "t": "E",
+   "q": "Cae del cielo en copos blancos cuando hace mucho frío.",
+   "a": "nieve"
+  },
+  {
+   "t": "E",
+   "q": "Punto cardinal hacia donde señala la aguja de la brújula.",
+   "a": "norte"
+  }
+ ],
+ "Ñ": [
+  {
+   "t": "E",
+   "q": "Ave grande de las pampas que no puede volar.",
+   "a": "ñandú"
+  },
+  {
+   "t": "C",
+   "q": "Doce meses juntos forman un…",
+   "a": "año"
+  },
+  {
+   "t": "E",
+   "q": "Pasta argentina que se come los 29 de cada mes.",
+   "a": "ñoqui",
+   "alt": [
+    "ñoquis"
+   ]
+  },
+  {
+   "t": "E",
+   "q": "Persona de nariz chata.",
+   "a": "ñato"
+  },
+  {
+   "t": "C",
+   "q": "Animal de ocho patas que teje telas para cazar.",
+   "a": "araña"
+  },
+  {
+   "t": "C",
+   "q": "Casita de madera para pasar el fin de semana.",
+   "a": "cabaña"
+  },
+  {
+   "t": "C",
+   "q": "Parte dura que tenemos en la punta de los dedos.",
+   "a": "uña"
+  },
+  {
+   "t": "C",
+   "q": "Primera parte del día, cuando nos levantamos.",
+   "a": "mañana"
+  },
+  {
+   "t": "C",
+   "q": "La mano bien cerrada, con fuerza.",
+   "a": "puño"
+  },
+  {
+   "t": "C",
+   "q": "Día en que se celebra un año más de vida, soplando velitas.",
+   "a": "cumpleaños"
+  },
+  {
+   "t": "C",
+   "q": "Madera que se quema en la parrilla o la chimenea.",
+   "a": "leña"
+  },
+  {
+   "t": "C",
+   "q": "Cartel o gesto que indica algo.",
+   "a": "señal"
+  }
+ ],
+ "O": [
+  {
+   "t": "E",
+   "q": "Mar enorme que separa los continentes.",
+   "a": "océano"
+  },
+  {
+   "t": "E",
+   "q": "Animal del que se saca la lana.",
+   "a": "oveja"
+  },
+  {
+   "t": "E",
+   "q": "Monumento alto y fino que está en el centro de Buenos Aires.",
+   "a": "obelisco"
+  },
+  {
+   "t": "E",
+   "q": "Animal grande y peludo que duerme todo el invierno.",
+   "a": "oso"
+  },
+  {
+   "t": "E",
+   "q": "Grupo grande de músicos que tocan juntos.",
+   "a": "orquesta"
+  },
+  {
+   "t": "E",
+   "q": "Con ella escuchamos los sonidos.",
+   "a": "oreja"
+  },
+  {
+   "t": "E",
+   "q": "Recipiente redondo donde se cocina la comida.",
+   "a": "olla"
+  },
+  {
+   "t": "E",
+   "q": "Marquita redonda en el medio de la panza.",
+   "a": "ombligo"
+  },
+  {
+   "t": "E",
+   "q": "Estación del año en la que se caen las hojas de los árboles.",
+   "a": "otoño"
+  },
+  {
+   "t": "E",
+   "q": "Mono grande de pelo rojizo que vive en los árboles.",
+   "a": "orangután"
+  },
+  {
+   "t": "E",
+   "q": "Obra de teatro que se canta con música de orquesta.",
+   "a": "ópera"
+  },
+  {
+   "t": "E",
+   "q": "Gas del aire que necesitamos para respirar.",
+   "a": "oxígeno"
+  }
+ ],
+ "P": [
+  {
+   "t": "E",
+   "q": "Juguete redondo que rebota.",
+   "a": "pelota"
+  },
+  {
+   "t": "E",
+   "q": "Se abre para no mojarse cuando llueve.",
+   "a": "paraguas"
+  },
+  {
+   "t": "E",
+   "q": "Lugar con agua donde se nada en verano.",
+   "a": "pileta"
+  },
+  {
+   "t": "E",
+   "q": "Maíz inflado que se come en el cine.",
+   "a": "pochoclo"
+  },
+  {
+   "t": "E",
+   "q": "Sobre ella se cocina el asado, con brasas abajo.",
+   "a": "parrilla"
+  },
+  {
+   "t": "E",
+   "q": "Animal que nada en la laguna y hace «cuac».",
+   "a": "pato"
+  },
+  {
+   "t": "E",
+   "q": "Personaje gracioso del circo, con la nariz roja.",
+   "a": "payaso"
+  },
+  {
+   "t": "E",
+   "q": "Instrumento grande con teclas blancas y negras.",
+   "a": "piano"
+  },
+  {
+   "t": "E",
+   "q": "Ladrón del mar, con parche en un ojo.",
+   "a": "pirata"
+  },
+  {
+   "t": "E",
+   "q": "Lugar del barrio con árboles, bancos y juegos.",
+   "a": "plaza"
+  },
+  {
+   "t": "E",
+   "q": "Construcción que sirve para cruzar un río.",
+   "a": "puente"
+  },
+  {
+   "t": "E",
+   "q": "Ahí escribe la maestra con tiza, en el aula.",
+   "a": "pizarrón"
+  }
+ ],
+ "Q": [
+  {
+   "t": "E",
+   "q": "Comida amarilla con agujeritos que les encanta a los ratones.",
+   "a": "queso"
+  },
+  {
+   "t": "E",
+   "q": "Árbol argentino de madera muy dura.",
+   "a": "quebracho"
+  },
+  {
+   "t": "E",
+   "q": "Número que viene después del catorce.",
+   "a": "quince"
+  },
+  {
+   "t": "E",
+   "q": "Negocio chiquito donde se venden golosinas y revistas.",
+   "a": "quiosco",
+   "alt": [
+    "kiosco"
+   ]
+  },
+  {
+   "t": "E",
+   "q": "Flauta de madera típica del norte argentino.",
+   "a": "quena"
+  },
+  {
+   "t": "C",
+   "q": "Grupo de jugadores que defienden los mismos colores.",
+   "a": "equipo"
+  },
+  {
+   "t": "C",
+   "q": "Insecto que pica y zumba cerca de la oreja en verano.",
+   "a": "mosquito"
+  },
+  {
+   "t": "C",
+   "q": "Palabra que significa «en este lugar».",
+   "a": "aquí"
+  },
+  {
+   "t": "C",
+   "q": "Bulto envuelto en papel que se manda por correo.",
+   "a": "paquete"
+  },
+  {
+   "t": "C",
+   "q": "Algo de tamaño muy, muy chico.",
+   "a": "chiquito"
+  },
+  {
+   "t": "C",
+   "q": "Aparato que hace un trabajo; la de lavar es una.",
+   "a": "máquina"
+  },
+  {
+   "t": "C",
+   "q": "Lugar grande y verde, con árboles y juegos al aire libre.",
+   "a": "parque"
+  }
+ ],
+ "R": [
+  {
+   "t": "E",
+   "q": "Animal chiquito al que le encanta el queso.",
+   "a": "ratón"
+  },
+  {
+   "t": "E",
+   "q": "Corriente de agua que baja de las montañas.",
+   "a": "río"
+  },
+  {
+   "t": "E",
+   "q": "Silla reclinable para tomar sol en la playa o el patio.",
+   "a": "reposera"
+  },
+  {
+   "t": "E",
+   "q": "Viento que gira y levanta polvo y hojas.",
+   "a": "remolino"
+  },
+  {
+   "t": "E",
+   "q": "Aparato que marca la hora.",
+   "a": "reloj"
+  },
+  {
+   "t": "E",
+   "q": "Animal verde que salta y vive cerca de la laguna.",
+   "a": "rana"
+  },
+  {
+   "t": "E",
+   "q": "Publicación con fotos y notas que sale cada semana.",
+   "a": "revista"
+  },
+  {
+   "t": "E",
+   "q": "Esquina de adentro de una habitación.",
+   "a": "rincón"
+  },
+  {
+   "t": "E",
+   "q": "Lo que sale cuando algo nos da mucha gracia.",
+   "a": "risa"
+  },
+  {
+   "t": "E",
+   "q": "Mueble grande donde se guarda la ropa.",
+   "a": "ropero"
+  },
+  {
+   "t": "E",
+   "q": "Lo que te dan envuelto en papel para tu cumpleaños.",
+   "a": "regalo"
+  },
+  {
+   "t": "E",
+   "q": "Parte redonda que hace andar al auto y a la bicicleta.",
+   "a": "rueda"
+  }
+ ],
+ "S": [
+  {
+   "t": "E",
+   "q": "Prenda para la cabeza que tapa del sol.",
+   "a": "sombrero"
+  },
+  {
+   "t": "E",
+   "q": "Fruta grande, verde por fuera y roja por dentro.",
+   "a": "sandía"
+  },
+  {
+   "t": "E",
+   "q": "Asiento grande y cómodo, para una sola persona.",
+   "a": "sillón"
+  },
+  {
+   "t": "E",
+   "q": "Cuerda gruesa que sirve para atar cosas.",
+   "a": "soga"
+  },
+  {
+   "t": "E",
+   "q": "Barco que puede viajar por debajo del agua.",
+   "a": "submarino"
+  },
+  {
+   "t": "E",
+   "q": "Aparato con luces roja, amarilla y verde que ordena el tránsito.",
+   "a": "semáforo"
+  },
+  {
+   "t": "E",
+   "q": "Animal parecido a la rana que salta por el jardín.",
+   "a": "sapo"
+  },
+  {
+   "t": "E",
+   "q": "Reptil largo, sin patas, que se arrastra por el suelo.",
+   "a": "serpiente"
+  },
+  {
+   "t": "E",
+   "q": "Comida de dos panes con fiambre y queso en el medio.",
+   "a": "sándwich"
+  },
+  {
+   "t": "E",
+   "q": "Hijo de tu hermano o de tu hermana.",
+   "a": "sobrino"
+  },
+  {
+   "t": "E",
+   "q": "Parte de la casa que está debajo del suelo.",
+   "a": "sótano"
+  },
+  {
+   "t": "E",
+   "q": "De ahí nace una planta nueva.",
+   "a": "semilla"
+  }
+ ],
+ "T": [
+  {
+   "t": "E",
+   "q": "Aparato con pantalla para ver programas.",
+   "a": "televisor"
+  },
+  {
+   "t": "E",
+   "q": "Baile argentino de parejas abrazadas.",
+   "a": "tango"
+  },
+  {
+   "t": "E",
+   "q": "Lo dulce que se come en los cumpleaños, con velitas arriba.",
+   "a": "torta"
+  },
+  {
+   "t": "E",
+   "q": "Recipiente que mantiene caliente el agua para el mate.",
+   "a": "termo"
+  },
+  {
+   "t": "E",
+   "q": "Transporte largo que anda por las vías.",
+   "a": "tren"
+  },
+  {
+   "t": "E",
+   "q": "Animal salvaje de pelaje con rayas negras.",
+   "a": "tigre"
+  },
+  {
+   "t": "E",
+   "q": "Instrumento que se golpea con dos palillos.",
+   "a": "tambor"
+  },
+  {
+   "t": "E",
+   "q": "Animal lento que lleva su caparazón a cuestas.",
+   "a": "tortuga"
+  },
+  {
+   "t": "E",
+   "q": "Sirve para cortar papel o tela.",
+   "a": "tijera"
+  },
+  {
+   "t": "E",
+   "q": "Pez grande y peligroso que vive en el mar.",
+   "a": "tiburón"
+  },
+  {
+   "t": "E",
+   "q": "Parte de la computadora que tiene las letras y los números.",
+   "a": "teclado"
+  },
+  {
+   "t": "E",
+   "q": "Parte de arriba de la casa que nos tapa de la lluvia.",
+   "a": "techo"
+  }
+ ],
+ "U": [
+  {
+   "t": "E",
+   "q": "Fruta redonda y chiquita de la que sale el vino.",
+   "a": "uva"
+  },
+  {
+   "t": "E",
+   "q": "Ropa igual para todos los chicos de una escuela.",
+   "a": "uniforme"
+  },
+  {
+   "t": "E",
+   "q": "Caballo de cuento con un cuerno en la frente.",
+   "a": "unicornio"
+  },
+  {
+   "t": "E",
+   "q": "Lugar donde se estudia después de terminar la secundaria.",
+   "a": "universidad"
+  },
+  {
+   "t": "E",
+   "q": "El que está al final de todo.",
+   "a": "último"
+  },
+  {
+   "t": "E",
+   "q": "Instrumento chiquito, parecido a una guitarra pequeña.",
+   "a": "ukelele"
+  },
+  {
+   "t": "E",
+   "q": "Caja donde se meten los votos en las elecciones.",
+   "a": "urna"
+  },
+  {
+   "t": "E",
+   "q": "Algo que no puede esperar ni un minuto.",
+   "a": "urgente"
+  },
+  {
+   "t": "E",
+   "q": "Algo que sirve para muchas cosas.",
+   "a": "útil"
+  },
+  {
+   "t": "E",
+   "q": "Herramienta de cocina, como la cuchara o el cucharón.",
+   "a": "utensilio"
+  },
+  {
+   "t": "E",
+   "q": "Persona que nació en el país vecino, cruzando el Río de la Plata.",
+   "a": "uruguayo"
+  },
+  {
+   "t": "E",
+   "q": "Todo lo que tiene que ver con la ciudad.",
+   "a": "urbano"
+  }
+ ],
+ "V": [
+  {
+   "t": "E",
+   "q": "Abertura en la pared para mirar hacia afuera.",
+   "a": "ventana"
+  },
+  {
+   "t": "E",
+   "q": "Se enciende sobre la torta de cumpleaños.",
+   "a": "vela"
+  },
+  {
+   "t": "E",
+   "q": "Parte de la calle por donde camina la gente.",
+   "a": "vereda"
+  },
+  {
+   "t": "E",
+   "q": "Parte de adelante de un negocio donde se muestra la mercadería.",
+   "a": "vidriera"
+  },
+  {
+   "t": "E",
+   "q": "Tiempo libre, sin escuela, para descansar y jugar.",
+   "a": "vacaciones"
+  },
+  {
+   "t": "E",
+   "q": "Persona que vive en la casa de al lado.",
+   "a": "vecino"
+  },
+  {
+   "t": "E",
+   "q": "Instrumento de cuerdas que se toca con un arco.",
+   "a": "violín"
+  },
+  {
+   "t": "E",
+   "q": "Montaña que larga humo, ceniza y lava.",
+   "a": "volcán"
+  },
+  {
+   "t": "E",
+   "q": "Negocio donde se venden frutas y verduras.",
+   "a": "verdulería"
+  },
+  {
+   "t": "E",
+   "q": "Animal que da leche y hace «mu».",
+   "a": "vaca"
+  },
+  {
+   "t": "E",
+   "q": "Aparato que mueve el aire cuando hace calor.",
+   "a": "ventilador"
+  },
+  {
+   "t": "E",
+   "q": "Viaje que hace el avión por el aire.",
+   "a": "vuelo"
+  }
+ ],
+ "X": [
+  {
+   "t": "E",
+   "q": "Instrumento con láminas de madera que se golpean con palitos.",
+   "a": "xilófono"
+  },
+  {
+   "t": "E",
+   "q": "Apodo de los hinchas de Boca Juniors.",
+   "a": "xeneize",
+   "alt": [
+    "xeneise"
+   ]
+  },
+  {
+   "t": "E",
+   "q": "Parte de las plantas que lleva el agua desde la raíz hasta las hojas.",
+   "a": "xilema"
+  },
+  {
+   "t": "E",
+   "q": "Grabado artístico hecho sobre una plancha de madera.",
+   "a": "xilografía"
+  },
+  {
+   "t": "E",
+   "q": "Rechazo u odio hacia las personas de otros países.",
+   "a": "xenofobia"
+  }
+ ],
+ "Y": [
+  {
+   "t": "E",
+   "q": "Juguete que sube y baja por una cuerda.",
+   "a": "yoyo",
+   "alt": [
+    "yo-yo",
+    "yo yo"
+   ]
+  },
+  {
+   "t": "C",
+   "q": "Lugar con arena junto al mar.",
+   "a": "playa"
+  },
+  {
+   "t": "E",
+   "q": "Parte amarilla y redonda del huevo.",
+   "a": "yema"
+  },
+  {
+   "t": "E",
+   "q": "Lo que te ponen en el brazo si te quebrás un hueso.",
+   "a": "yeso"
+  },
+  {
+   "t": "E",
+   "q": "Hojas verdes con las que se prepara el mate.",
+   "a": "yerba"
+  },
+  {
+   "t": "E",
+   "q": "Cocodrilo chico que vive en los ríos del norte argentino.",
+   "a": "yacaré"
+  },
+  {
+   "t": "E",
+   "q": "La hembra del caballo.",
+   "a": "yegua"
+  },
+  {
+   "t": "C",
+   "q": "Lo que se le da a alguien que lo necesita.",
+   "a": "ayuda"
+  },
+  {
+   "t": "C",
+   "q": "La primera comida del día.",
+   "a": "desayuno"
+  },
+  {
+   "t": "C",
+   "q": "Luz muy fuerte que cae del cielo durante las tormentas.",
+   "a": "rayo"
+  },
+  {
+   "t": "C",
+   "q": "Este día, el de ahora.",
+   "a": "hoy"
+  },
+  {
+   "t": "C",
+   "q": "Animal parecido a la vaca que antes tiraba del arado.",
+   "a": "buey"
+  }
+ ],
+ "Z": [
+  {
+   "t": "E",
+   "q": "Calzado que nos ponemos en los pies.",
+   "a": "zapato"
+  },
+  {
+   "t": "C",
+   "q": "Útil para escribir que se afila.",
+   "a": "lápiz"
+  },
+  {
+   "t": "E",
+   "q": "Animal parecido a un perro chico, de cola muy peluda.",
+   "a": "zorro"
+  },
+  {
+   "t": "E",
+   "q": "Verdura naranja y larga que comen los conejos.",
+   "a": "zanahoria"
+  },
+  {
+   "t": "E",
+   "q": "Verdura grande y redonda que se usa en el puchero.",
+   "a": "zapallo"
+  },
+  {
+   "t": "E",
+   "q": "Baile folclórico argentino que se baila con un pañuelo en la mano.",
+   "a": "zamba"
+  },
+  {
+   "t": "C",
+   "q": "Órgano que late fuerte en el pecho.",
+   "a": "corazón"
+  },
+  {
+   "t": "C",
+   "q": "Con ella olemos los perfumes y las comidas.",
+   "a": "nariz"
+  },
+  {
+   "t": "C",
+   "q": "Estado de mucha, mucha alegría.",
+   "a": "feliz"
+  },
+  {
+   "t": "C",
+   "q": "Planta alta de la que sale el choclo.",
+   "a": "maíz"
+  },
+  {
+   "t": "C",
+   "q": "Mujer que actúa en películas y obras de teatro.",
+   "a": "actriz"
+  },
+  {
+   "t": "C",
+   "q": "Persona que sale a buscar animales al monte.",
+   "a": "cazador"
+  }
+ ]
+}

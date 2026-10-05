@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>El Rosco — Administración</title>
+<link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+<h1>El Rosco — Administración</h1>
+<div class="tabs">
+  <button data-tab="partida" class="active">Partida</button>
+  <button data-tab="moderacion">Moderación</button>
+  <button data-tab="tematicas">Temáticas</button>
+  <button data-tab="palabras">Palabras</button>
+</div>
+
+<section id="tab-partida" class="card">
+  <h2>Nueva partida</h2>
+  <label>Temática
+    <select id="np-theme"></select>
+  </label>
+  <div class="row">
+    <div><label>Jugador 1 <input id="np-p1" type="text" placeholder="Nombre" /></label></div>
+    <div><label>Jugador 2 <input id="np-p2" type="text" placeholder="Nombre" /></label></div>
+    <div><label>Tiempo por jugador (min, 1–10)
+      <select id="np-min"></select>
+    </label></div>
+  </div>
+  <p><button id="np-create">Crear partida</button></p>
+  <div id="np-result"></div>
+</section>
+
+<section id="tab-moderacion" class="card" hidden>
+  <h2>Moderación</h2>
+  <div class="row">
+    <label>Código de partida <input id="md-code" type="text" placeholder="ABC123" style="text-transform:uppercase" /></label>
+    <button id="md-join">Conectar</button>
+  </div>
+  <div id="md-body"></div>
+</section>
+
+<section id="tab-tematicas" class="card" hidden>
+  <h2>Temáticas</h2>
+  <div class="row">
+    <input id="th-name" type="text" placeholder="Nombre de la nueva temática" />
+    <button id="th-create">Crear (arranca vacía)</button>
+  </div>
+  <div id="th-list" style="margin-top:12px"></div>
+</section>
+
+<section id="tab-palabras" class="card" hidden>
+  <h2>Palabras</h2>
+  <div class="row">
+    <label>Temática <select id="pw-theme"></select></label>
+    <label>Letra <select id="pw-letter"></select></label>
+    <label style="font-weight:normal"><input type="checkbox" id="pw-enabled" checked /> Letra habilitada</label>
+  </div>
+  <p class="muted" id="pw-stats"></p>
+  <table class="defs"><thead><tr>
+    <th>Palabra</th><th>Definición</th><th>Pista</th><th>Alternativas</th><th>Activa</th><th>Usos</th><th></th>
+  </tr></thead><tbody id="pw-rows"></tbody></table>
+  <div class="row" style="margin-top:12px">
+    <button id="pw-add" class="ghost">+ Agregar definición</button>
+    <span style="flex:1"></span>
+    <button id="pw-reset" class="warn">Restablecer</button>
+    <button id="pw-save" class="ok">Guardar todo el listado</button>
+  </div>
+  <p class="muted">Los cambios quedan en borrador hasta apretar <b>Guardar</b>. <b>Restablecer</b> descarta el borrador y recarga desde el servidor.</p>
+</section>
+
+<script src="/static/js/common.js"></script>
+<script src="/static/js/admin.js"></script>
+</body>
+</html>

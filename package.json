@@ -1,0 +1,25 @@
+{
+  "dependencies": {
+    "better-sqlite3": "^13.0.3",
+    "express": "^4.21.2",
+    "qrcode": "^1.5.4",
+    "ws": "^8.18.0"
+  },
+  "description": "Versión servidor (Docker) del juego El Rosco: vistas de moderador, jugadores y público sincronizadas en tiempo real.",
+  "devDependencies": {
+    "@types/better-sqlite3": "^9.6.0",
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.10.2",
+    "@types/qrcode": "^1.5.5",
+    "@types/ws": "^8.5.13",
+    "typescript": "^5.7.2"
+  },
+  "license": "MIT",
+  "main": "dist/index.js",
+  "name": "rosco-server",
+  "scripts": {
+    "build": "tsc && cp -r src/seed dist/seed",
+    "start": "node dist/index.js"
+  },
+  "version": "1.0.0"
+}
