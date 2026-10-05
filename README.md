@@ -1,6 +1,6 @@
-# El Rosco — versión servidor (Docker)
+# El Rosco
 
-El Rosco estilo Pasapalabra para dos jugadores, con las cuatro vistas
+El Rosco estilo Pasapalabra para dos jugadores, con cuatro vistas
 sincronizadas en tiempo real: moderación, jugador 1, jugador 2 y vista para
 el público. Se distribuye como imagen Docker lista para usar.
 
